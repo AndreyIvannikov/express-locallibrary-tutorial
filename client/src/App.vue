@@ -1,11 +1,18 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view />
+  <the-navbar />
+  <main class="container mx-auto">
+    <router-view />
+  </main>
 </template>
 
+<script>
+import TheNavbar from "./components/TheNavbar";
+export default {
+  components: {
+    TheNavbar,
+  },
+};
+</script>
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
