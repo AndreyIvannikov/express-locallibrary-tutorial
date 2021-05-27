@@ -3,7 +3,7 @@
   <ul v-else>
     <li v-for="book in BookListInstance" :key="book._id" class="p-2">
       <router-link
-        :to="`catalog/books/:${book._id}`"
+        :to="`bookinstance/${book._id}`"
         class="hover:text-gray-500 text-2xl"
         :class="{
           'text-red-600': book.status === 'Maintenance',
