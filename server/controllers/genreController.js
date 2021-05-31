@@ -1,6 +1,7 @@
+const async = require("async");
+const { body, validationResult } = require("express-validator");
 const Genre = require("../models/genre");
 const Book = require("../models/book");
-const async = require("async");
 
 // Display list of all Genre.
 exports.genre_list = function (req, res, next) {
@@ -49,9 +50,42 @@ exports.genre_create_get = function (req, res) {
 };
 
 // Handle Genre create on POST.
-exports.genre_create_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: Genre create POST");
-};
+exports.genre_create_post = [
+  body("name", "Имя не может быть пустым")
+    .trim()
+    .escape()
+    .isLength({ min: 1 }),
+
+  (req, res, next) => {
+    const error = validationResult(req);
+    const genre = new Genre({ name: req.body.name });
+
+    if (!error.isEmpty()) {
+      return res.status(400).json({
+        title: "Create Genre",
+        genre,
+        errors: error.array(),
+      });
+    }
+
+    Genre.findOne({ name: req.body.name }).exec((err, foundGenre) => {
+      if (err) {
+        return next(err);
+      }
+
+      if (foundGenre) {
+        res.send({ title: "Такие данные уже добавленны" });
+      } else {
+        genre.save((saveErr) => {
+          if (saveErr) {
+            return next(saveErr);
+          }
+          res.send({ title: "Данные сохраненны" });
+        });
+      }
+    });
+  },
+];
 
 // Display Genre delete form on GET.
 exports.genre_delete_get = function (req, res) {

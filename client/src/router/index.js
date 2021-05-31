@@ -1,10 +1,8 @@
-import {
-  createRouter,
-  createWebHashHistory
-} from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import AppHome from "../views/AppHome.vue";
 
-const routes = [{
+const routes = [
+  {
     path: "/",
     name: "Home",
     component: AppHome,
@@ -13,7 +11,7 @@ const routes = [{
     path: "/about",
     name: "About",
     component: () =>
-      import( /* webpackChunkName: "about" */ "../views/About.vue"),
+      import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
   {
     path: "/catalog/books",
@@ -49,6 +47,11 @@ const routes = [{
     path: "/catalog/genres",
     name: "GenreList",
     component: () => import("../components/GenreList.vue"),
+  },
+  {
+    path: "/catalog/genre/create",
+    name: "GenreCreate",
+    component: () => import("../components/GenreCreate.vue"),
   },
   {
     path: "/catalog/genre/:id",

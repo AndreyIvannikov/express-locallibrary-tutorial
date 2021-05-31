@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import getBookListInstanceInfo from '../api/getBookListInstanceInfo';
+import getBookListInstanceInfo from "../api/getBookListInstanceInfo";
 export default {
   data() {
     return {
@@ -35,22 +35,23 @@ export default {
   },
 
   async mounted() {
-    this.bookListInstanceInfo = await getBookListInstanceInfo(this.$route.params.id);
+    this.bookListInstanceInfo = await getBookListInstanceInfo(
+      this.$route.params.id
+    );
   },
 
   methods: {
     dateConfig(date) {
       const options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    };
-    return new Date(date).toLocaleDateString('ru-RU', options)
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+      return new Date(date).toLocaleDateString("ru-RU", options);
     },
   },
 };
-
 </script>
 
 <style lang="scss" scoped></style>

@@ -1,7 +1,7 @@
 <template>
   <section class="home">
     <h2 v-if="!countElements">Книг пока нет...</h2>
-    <div class="" v-else>
+    <div v-else>
       <h1>Local Library Home</h1>
       <ul>
         <li><strong>Books</strong> {{ countElements.book_count }}</li>
