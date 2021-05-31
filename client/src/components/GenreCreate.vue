@@ -28,17 +28,17 @@
             hover:bg-teal-700
             border-teal-500
             hover:border-teal-700
-            text-sm
-            border-4
-            text-black
+            text-sm text-black
             py-1
             px-2
             rounded
+            btn btn-blue
           "
         >
           Создать жанр
         </button>
       </div>
+      <span v-if="error">{{ error }}</span>
     </form>
   </div>
 </template>
@@ -49,12 +49,12 @@ export default {
   data() {
     return {
       genres: null,
+      error: null,
     };
   },
   methods: {
     async addGenre() {
-      console.log(2);
-      await createGenre({ name: this.genres });
+      this.error = await createGenre({ name: this.genres });
     },
   },
 };

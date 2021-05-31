@@ -74,15 +74,18 @@ exports.genre_create_post = [
       }
 
       if (foundGenre) {
-        res.send({ title: "Такие данные уже добавленны" });
-      } else {
-        genre.save((saveErr) => {
-          if (saveErr) {
-            return next(saveErr);
-          }
-          res.send({ title: "Данные сохраненны" });
+        return res.status(400).json({
+          title: "Create Genre",
+          genre,
+          errors: [{ msg: "Такие данные уже добавленны" }],
         });
       }
+      genre.save((saveErr) => {
+        if (saveErr) {
+          return next(saveErr);
+        }
+        res.send({ title: "Данные сохраненны" });
+      });
     });
   },
 ];

@@ -39,6 +39,11 @@ const routes = [
     component: () => import("../components/AuthorList.vue"),
   },
   {
+    path: "/catalog/author/create",
+    name: "AuthorCreate",
+    component: () => import("../components/AuthorCreate.vue"),
+  },
+  {
     path: "/catalog/author/:id",
     name: "AuthorInfo",
     component: () => import("../components/AuthorInfo.vue"),

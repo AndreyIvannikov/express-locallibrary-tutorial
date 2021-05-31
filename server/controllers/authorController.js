@@ -1,6 +1,8 @@
 const async = require("async");
+const { body, validationResult } = require("express-validator");
 const Author = require("../models/author");
 const Book = require("../models/book");
+
 // Показать список всех авторов.
 exports.author_list = function (req, res, next) {
   Author.find()
@@ -48,9 +50,58 @@ exports.author_create_get = function (req, res) {
 };
 
 // Создать автора по запросу POST.
-exports.author_create_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: Author create POST");
-};
+exports.author_create_post = [
+  body("firstName")
+    .trim()
+    .isLength({ min: 3 })
+    .escape()
+    .withMessage("Необходимо указать имя")
+    .isAlphanumeric()
+    .withMessage("Имя должно состоять из буквенных симоволов"),
+
+  body("lastName")
+    .trim()
+    .isLength({ min: 3 })
+    .escape()
+    .withMessage("Необходимо указать фамилию")
+    .isAlphanumeric()
+    .withMessage("Фамилия должно состоять из буквенных симоволов"),
+
+  body("dateOfBirth", "Invalid date of birth")
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
+
+  body("dateOfDeath", "Invalid date of death")
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
+
+  (req, res, next) => {
+    const error = validationResult(req.body);
+
+    if (!error.isEmpty()) {
+      return res.status(400).json({
+        title: "Create Genre",
+        author: req.body,
+        errors: error.array(),
+      });
+    }
+    const author = new Author({
+      first_name: req.body.firstName,
+      family_name: req.body.lastName,
+      date_of_birth: req.body.dateOfBirth,
+      date_of_death: req.body.dateOfDeath,
+    });
+    author.save((err) => {
+      console.log(author);
+      if (err) {
+        return next(err);
+      }
+      res.send({ title: "Данные сохраненны" });
+    });
+  },
+];
 
 // Показать форму удаления автора по запросу GET.
 exports.author_delete_get = function (req, res) {
