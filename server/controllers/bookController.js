@@ -1,4 +1,5 @@
 const async = require("async");
+const { body, validationResult } = require("express-validator");
 const Book = require("../models/book");
 const Author = require("../models/author");
 const Genre = require("../models/genre");
@@ -93,11 +94,57 @@ exports.book_create_get = function (req, res) {
 };
 
 // Handle book create on POST.
-exports.book_create_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: Book create POST");
-};
+exports.book_create_post = [
+  (req, res, next) => {
+    if (!(req.body.genre instanceof Array)) {
+      if (typeof req.body.genre === "undefined") req.body.genre = [];
+      else req.body.genre = new Array(req.body.genre);
+    }
+    next();
+  },
+  body("isbn", "ISBN must not be empty")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("author", "Author must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("title", "Title must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("summary", "Summaru must not be empty.")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("genre.*").escape(),
 
-// Display book delete form on GET.
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    const book = new Book({
+      title: req.body.title,
+      author: req.body.author,
+      summary: req.body.summary,
+      isbn: req.body.isbn,
+      genre: req.body.genre,
+    });
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.array(),
+      });
+    }
+    book.save((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.status(200).json(book);
+    });
+  },
+];
+
 exports.book_delete_get = function (req, res) {
   res.send("NOT IMPLEMENTED: Book delete GET");
 };

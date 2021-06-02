@@ -24,6 +24,11 @@ const routes = [
     component: () => import("../components/BookInfo.vue"),
   },
   {
+    path: "/catalog/book/create",
+    name: "BookCreate",
+    component: () => import("../components/BookCreate.vue"),
+  },
+  {
     path: "/catalog/bookinstances",
     name: "BookInstance",
     component: () => import("../components/BookInstance.vue"),
