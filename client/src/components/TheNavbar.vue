@@ -14,7 +14,7 @@
             <router-link to="/catalog/genres">All genres</router-link>
           </li>
           <li class="p-1.5">
-            <router-link to="/catalog/bookinstances"
+            <router-link to="/catalog/bookinstance"
               >All book-instances
             </router-link>
           </li>
