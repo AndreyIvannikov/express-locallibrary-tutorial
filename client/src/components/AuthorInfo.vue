@@ -3,7 +3,11 @@
   <div v-else class="mb-10">
     <div class="mb-5">
       <h1 class="text-6xl">Author: {{ authorInfo.author.first_name }}</h1>
-      <p>{{ authorInfo.author.date_of_birth }}</p>
+      <p>
+        {{
+          new Date(authorInfo.author.date_of_birth).toLocaleDateString("ru-RU")
+        }}
+      </p>
     </div>
 
     <ul class="author__content flex flex-col items-center">
@@ -22,6 +26,11 @@
         <p class="w-2/5">{{ books.summary }}</p>
       </li>
     </ul>
+    <router-link
+      class="underline text-blue-500"
+      :to="`/catalog/author/${$route.params.id}/delete`"
+      >Delete author</router-link
+    >
   </div>
 </template>
 

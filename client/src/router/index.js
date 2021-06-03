@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import AppHome from "../views/AppHome.vue";
 
 const routes = [
@@ -35,7 +35,7 @@ const routes = [
   },
   {
     path: "/catalog/bookinstance/create",
-    name: "BookInstance",
+    name: "BookInstanceCreate",
     component: () => import("../components/BookInstanceCreate.vue"),
   },
   {
@@ -59,6 +59,11 @@ const routes = [
     component: () => import("../components/AuthorInfo.vue"),
   },
   {
+    path: "/catalog/author/:id/delete",
+    name: "AuthorDelete",
+    component: () => import("../components/AuthorDelete.vue"),
+  },
+  {
     path: "/catalog/genres",
     name: "GenreList",
     component: () => import("../components/GenreList.vue"),
@@ -76,7 +81,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 

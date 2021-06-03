@@ -104,13 +104,68 @@ exports.author_create_post = [
 ];
 
 // Показать форму удаления автора по запросу GET.
-exports.author_delete_get = function (req, res) {
-  res.send("NOT IMPLEMENTED: Author delete GET");
+exports.author_delete_get = function (req, res, next) {
+  async.parallel(
+    {
+      author: (callback) => {
+        Author.findById(req.params.id).exec(callback);
+      },
+      book: (callback) => {
+        Book.find({ author: req.params.id }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.author == null) {
+        res.json({ title: "Автор не найден" });
+      }
+      res.json({
+        title: "Delete Author",
+        author: results.author,
+        book: results.book,
+      });
+    }
+  );
 };
 
 // Удалить автора по запросу POST.
-exports.author_delete_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: Author delete POST");
+exports.author_delete_post = function (req, res, next) {
+  async.parallel(
+    {
+      author(callback) {
+        Author.findById(req.body.id).exec(callback);
+      },
+      authors_books(callback) {
+        Book.find({ author: req.body.id }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      // Success
+      if (results.authors_books.length > 0) {
+        // Автор книги. Визуализация выполняется так же, как и для GET route.
+        res.send({
+          title: "Delete Author",
+          author: results.author,
+          author_books: results.authors_books,
+        });
+      } else {
+        // У автора нет никаких книг. Удалить объект и перенаправить в список авторов.
+        Author.findOneAndDelete(req.body.id, (err) => {
+          console.log(req.body.id);
+          if (err) {
+            return next(err);
+          }
+          // Успех-перейти к списку авторов
+          res.send("успех");
+        });
+      }
+    }
+  );
 };
 
 // Показать форму обновления автора по запросу GET.

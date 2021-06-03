@@ -15,7 +15,7 @@
           </li>
           <li class="p-1.5">
             <router-link to="/catalog/bookinstance"
-              >All book-instances
+              >All book-instance
             </router-link>
           </li>
           <li class="p-1.5">
