@@ -6,7 +6,7 @@
         :to="`book/${book._id}`"
         class="hover:text-gray-500 text-2xl"
       >
-        {{ book.title }} ||
+        {{ book.title }}
       </router-link>
       <strong>{{ book.author.first_name }}</strong>
     </li>

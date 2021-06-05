@@ -9,7 +9,8 @@ exports.author_list = function (req, res, next) {
     .sort([["family_name", "ascending"]])
     .exec((err, authorList) => {
       if (err) {
-        next(err);
+        console.log("ошибка");
+        return next(err);
       }
       res.send({ authorList });
     });
@@ -116,10 +117,14 @@ exports.author_delete_get = function (req, res, next) {
     },
     (err, results) => {
       if (err) {
+        console.log(req.params.id);
         return next(err);
       }
+      console.log(req.params.id);
+
       if (results.author == null) {
-        res.json({ title: "Автор не найден" });
+        console.log("qdaqsdasdas");
+        return next(err);
       }
       res.json({
         title: "Delete Author",
@@ -155,13 +160,10 @@ exports.author_delete_post = function (req, res, next) {
         });
       } else {
         // У автора нет никаких книг. Удалить объект и перенаправить в список авторов.
-        Author.findOneAndDelete(req.body.id, (err) => {
-          console.log(req.body.id);
+        Author.findOneAndDelete({ _id: req.body.id }, (err) => {
           if (err) {
             return next(err);
           }
-          // Успех-перейти к списку авторов
-          res.send("успех");
         });
       }
     }

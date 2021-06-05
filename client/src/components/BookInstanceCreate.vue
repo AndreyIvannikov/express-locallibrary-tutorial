@@ -68,7 +68,7 @@
           >
             Imprint:
           </label>
-          <input
+          <!-- <input
             class="
               appearance-none
               block
@@ -89,7 +89,8 @@
             type="text"
             placeholder="imprint"
             v-model="imprint"
-          />
+          /> -->
+          <form-input :placeholder="'imprint'" v-model="imprint" />
           <p class="text-red-500 text-xs italic error-msg">Ошибка</p>
         </div>
       </div>
@@ -206,7 +207,9 @@
 <script>
 import getBookList from "../api/getBookList";
 import createBookInstance from "../api/createBookInstance";
+import FormInput from "../components/FormInput";
 export default {
+  components: { FormInput },
   data() {
     return {
       bookList: [],

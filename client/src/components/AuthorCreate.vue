@@ -175,6 +175,7 @@ export default {
         dateOfBirth: this.dateOfBirth,
         dateOfDeath: this.dateOfDeath,
       });
+      this.$router.push("/catalog/authors");
     },
   },
 };
