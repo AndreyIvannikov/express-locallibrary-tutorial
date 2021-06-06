@@ -1,6 +1,9 @@
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
+const EventEmitter = require("events");
+
+const myEmitter = new EventEmitter();
 // const favicon = require('serve-favicon');
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
@@ -32,11 +35,16 @@ app.use(express.json());
 app.use("/users", users);
 app.use("/catalog", catalogRouter);
 
-app.use((req, res, next) => {
-  const err = new Error("Not Found");
-  err.status = 404;
-  next(err);
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
 });
+
+// app.use((req, res, next) => {
+//   const err = new Error("Not Found");
+//   err.status = 404;
+//   next(err);
+// });
 
 app.use((err, req, res, next) => {
   // set locals, only providing error in development
@@ -46,4 +54,10 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
 });
 
+// myEmitter.emit("error", () => {
+//   console.log("Helloooo! first listener");
+// });
+myEmitter.eventNames("error", () => {
+  console.log(23);
+});
 module.exports = app;

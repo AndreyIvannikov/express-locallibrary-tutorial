@@ -1,4 +1,12 @@
 <template>
+  <atom-spinner
+    class="text-left flex flex-col items-center"
+    :animation-duration="1000"
+    :size="60"
+    :color="'#ff1d5e'"
+    v-if="loading"
+  />
+
   <h2 v-if="book.length === 0">Книги пока что нет...</h2>
   <div v-else class="text-left flex flex-col items-center">
     <div class="w-2/5 text-left flex flex-col justify-start m-5">
@@ -16,21 +24,55 @@
         <p><strong> ID: </strong>{{ copy._id }}</p>
       </div>
     </div>
+
+    <button class="btn btn-blue" @click="showModal">Delete book</button>
+    <modal-delete v-show="isModalVisible" @close="closeModal">
+      <template #header> Удаление книги {{ title }} ?</template>
+      <template #body> Вы действительно хотите удалить кингу ?</template>
+      <template #footer>
+        <button @click.stop="deleteBook" class="btn btn-red">Да</button>
+        <button @click.stop="closeModal" class="btn btn-blue">Отмена</button>
+      </template>
+    </modal-delete>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { AtomSpinner } from "epic-spinners";
+import ModalDelete from "./ModalDelete";
 export default {
+  components: { ModalDelete, AtomSpinner },
   data() {
     return {
       book: [],
       booksCopy: [],
       title: null,
+      isModalVisible: false,
+      loading: false,
     };
+  },
+  methods: {
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+    },
+    async deleteBook() {
+      this.loading = true;
+
+      const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}/delete`;
+      const data = await axios.post(url, {
+        id: this.$route.params.id,
+      });
+      this.loading = false;
+      console.log(data);
+    },
   },
   async mounted() {
     try {
+      this.loading = true;
       const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}`;
       const { data } = await axios.get(url);
       this.book = data.book;
@@ -39,6 +81,8 @@ export default {
       console.log(this.booksCopy);
     } catch (err) {
       console.log(err);
+    } finally {
+      this.loading = false;
     }
   },
 };

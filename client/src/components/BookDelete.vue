@@ -1,11 +1,8 @@
 <template>
   <p v-if="loading">Загрузка...</p>
-  <h2 v-else-if="authorName === undefind">
-    Автор с таким <strong>{{ $route.params.id }}</strong> ID не найден
-  </h2>
   <div v-else>
     <h1 class="text-4xl m-5">
-      Удаление автора
+      Вы действительно хотите удалить книгу
       <strong
         >{{ authorName.author.first_name }}
         {{ authorName.author.family_name }}</strong
@@ -34,8 +31,7 @@
 </template>
 
 <script>
-import getInfoAuthorDelete from "../api/getAuthorAndBooksDelete";
-import removeAuthor from "../api/deleteAuthor";
+import getBookList from "../api/getBookList";
 export default {
   data() {
     return {
@@ -45,19 +41,13 @@ export default {
   },
   async mounted() {
     try {
-      this.authorName = await getInfoAuthorDelete(this.$route.params.id);
-      console.log(this.authorName);
+      this.bookList = await getInfoAuthorDelete(this.$route.params.id);
+      console.log(this.bookList);
     } catch (e) {
       console.log(e);
     } finally {
       this.loading = false;
     }
-  },
-  methods: {
-    async deleteAuthor() {
-      await removeAuthor(this.$route.params.id);
-      this.$router.push({ name: "AuthorList" });
-    },
   },
 };
 </script>

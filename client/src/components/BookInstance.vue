@@ -12,7 +12,7 @@
             book.status != 'Available' && book.status != 'Maintenance',
         }"
       >
-        <span> {{ book.book.title }} # {{ book.status }}</span>
+        <span> {{ book.book.title }} - {{ book.status }}</span>
         <span v-if="book.status != 'Available'">
           Due:{{ dateConfig(book.due_back) }}
         </span>

@@ -16,28 +16,9 @@
           >
             Title
           </label>
-          <input
-            class="
-              appearance-none
-              block
-              w-full
-              bg-gray-200
-              text-gray-700
-              border
-              rounded
-              py-3
-              px-4
-              mb-3
-              leading-tight
-              focus:outline-none
-              focus:bg-white
-            "
-            :class="{ 'border-red-500': errorTitle }"
-            v-model="title"
-            id="grid-first-name"
-            type="text"
-            placeholder="Jane"
-          />
+
+          <form-input :placeholder="'Jane'" v-model="title" />
+
           <p class="text-red-500 text-xs italic error-msg" v-if="errorTitle">
             {{ errorTitle }}
           </p>
@@ -58,29 +39,9 @@
           >
             ISBN:
           </label>
-          <input
-            class="
-              appearance-none
-              block
-              w-full
-              bg-gray-200
-              text-gray-700
-              border border-gray-200
-              rounded
-              py-3
-              px-4
-              mb-3
-              leading-tight
-              focus:outline-none
-              focus:bg-white
-              focus:border-gray-500
-            "
-            :class="{ 'border-red-500': errorIsbn }"
-            id="grid-password"
-            type="text"
-            placeholder="ISBN"
-            v-model="isbn"
-          />
+
+          <form-input :placeholder="'ISBN'" v-model="isbn" />
+          {{ isbn }}
           <p class="text-red-500 text-xs italic error-msg" v-if="errorIsbn">
             {{ errorIsbn }}
           </p>
@@ -199,28 +160,8 @@
           >
             SUMMARY:
           </label>
-          <input
-            class="
-              appearance-none
-              block
-              w-full
-              bg-gray-200
-              text-gray-700
-              border border-gray-200
-              rounded
-              py-3
-              px-4
-              leading-tight
-              focus:outline-none
-              focus:bg-white
-              focus:border-gray-500
-            "
-            :class="{ 'border-red-500': errorSummary }"
-            v-model="summary"
-            id="grid-zip"
-            type="text"
-            placeholder="90210"
-          />
+
+          <form-input :placeholder="'902101'" v-model="summary" />
           <p class="text-red-500 text-xs italic error-msg" v-if="errorSummary">
             {{ errorSummary }}
           </p>
@@ -235,7 +176,11 @@
 import getAuthorList from "../api/getAuthorList";
 import getGenreList from "../api/getGenreList";
 import createBook from "../api/createBook";
+import FormInput from "../components/FormInput";
 export default {
+  components: {
+    FormInput,
+  },
   data() {
     return {
       genreList: [],
@@ -259,6 +204,7 @@ export default {
   methods: {
     async addBook() {
       this.clearFormError();
+      console.log(this.title, this.isbn, this.author);
       try {
         await createBook({
           isbn: this.isbn,
@@ -270,19 +216,19 @@ export default {
         this.clearForm();
       } catch (error) {
         let errorFields = error.response.data.errors;
-        errorFields.forEach((field) => {
-          if (field.param === "isbn") {
-            this.errorIsbn = field.msg;
+        errorFields.forEach(({ param, msg }) => {
+          if (param === "isbn") {
+            this.errorIsbn = msg;
           }
 
-          if (field.param === "author") {
-            this.errorAuthor = field.msg;
+          if (param === "author") {
+            this.errorAuthor = msg;
           }
-          if (field.param === "title") {
-            this.errorTitle = field.msg;
+          if (param === "title") {
+            this.errorTitle = msg;
           }
-          if (field.param === "summary") {
-            this.errorSummary = field.msg;
+          if (param === "summary") {
+            this.errorSummary = msg;
             return this.errorSummary;
           }
         });
