@@ -7,5 +7,6 @@ export default async function getAuthorAndBooks(id) {
     console.log(data);
   } catch (err) {
     console.log(err);
+    
   }
 }
