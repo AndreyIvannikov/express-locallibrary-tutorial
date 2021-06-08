@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col justify-center items-center">
-    <h1 class="mb-7 text-3xl">Создание новой книги</h1>
+    <h1 class="mb-7 text-3xl">Обновление книги</h1>
     <form class="w-full max-w-lg mb-6" @submit.prevent="addBook">
       <div class="flex flex-wrap -mx-3 mb-6 relative">
         <div class="w-full md:w-1/2 px-3 md:mb-0">
@@ -174,89 +174,23 @@
 </template>
 
 <script>
-import getAuthorList from "../api/getAuthorList";
-import getGenreList from "../api/getGenreList";
-import createBook from "../api/createBook";
 import FormInput from "../components/FormInput";
+import axios from "axios";
+
 export default {
   components: {
     FormInput,
   },
   data() {
-    return {
-      genreList: [],
-      authorList: [],
-      checkedGenre: [],
-      isbn: null,
-      author: "",
-      title: null,
-      summary: null,
-
-      errorIsbn: null,
-      errorAuthor: null,
-      errorTitle: null,
-      errorSummary: null,
-    };
+    return {};
   },
   async mounted() {
-    this.genreList = await getGenreList();
-    this.authorList = await getAuthorList();
-  },
-  methods: {
-    async addBook() {
-      this.clearFormError();
-      console.log(this.title, this.isbn, this.author);
-      try {
-        await createBook({
-          isbn: this.isbn,
-          genre: this.checkedGenre,
-          author: this.author,
-          title: this.title,
-          summary: this.summary,
-        });
-        this.clearForm();
-      } catch (error) {
-        let errorFields = error.response.data.errors;
-        errorFields.forEach(({ param, msg }) => {
-          if (param === "isbn") {
-            this.errorIsbn = msg;
-          }
+    const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}/update`;
 
-          if (param === "author") {
-            this.errorAuthor = msg;
-          }
-          if (param === "title") {
-            this.errorTitle = msg;
-          }
-          if (param === "summary") {
-            this.errorSummary = msg;
-            return this.errorSummary;
-          }
-        });
-      }
-    },
-
-    clearForm() {
-      this.isbn = "";
-      this.checkedGenre = "";
-      this.author = "";
-      this.title = "";
-      this.summary = "";
-    },
-
-    clearFormError() {
-      this.errorIsbn = "";
-      this.errorAuthor = "";
-      this.errorTitle = "";
-      this.errorSummary = "";
-    },
+    const { data } = await axios.get(url);
+    console.log(data);
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.error-msg {
-  position: absolute;
-  left: 30%;
-}
-</style>
+<style lang="scss" scoped></style>

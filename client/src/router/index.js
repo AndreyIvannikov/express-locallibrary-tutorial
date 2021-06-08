@@ -29,6 +29,11 @@ const routes = [
     component: () => import("../components/BookCreate.vue"),
   },
   {
+    path: "/catalog/book/:id/update",
+    name: "BookUpdate",
+    component: () => import("../components/BookUpdate.vue"),
+  },
+  {
     path: "/catalog/bookinstance",
     name: "BookInstance",
     component: () => import("../components/BookInstance.vue"),
