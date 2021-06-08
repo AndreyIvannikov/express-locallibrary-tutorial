@@ -27,14 +27,13 @@ exports.genre_detail = function (req, res, next) {
       },
     },
     (error, results) => {
-      if (error) {
-        return next(error);
-      }
       if (results.genre == null) {
-        // No results.
         const err = new Error("Genre not found");
         err.status = 404;
-        return next(err);
+        return res.status(404).json({ err });
+      }
+      if (error) {
+        return next(error);
       }
       res.send({
         title: "Genre Detail",
@@ -70,7 +69,7 @@ exports.genre_create_post = [
 
     Genre.findOne({ name: req.body.name }).exec((err, foundGenre) => {
       if (err) {
-        return next(err);
+        return res.status(404).json({ title: "Не найдено" });
       }
 
       if (foundGenre) {

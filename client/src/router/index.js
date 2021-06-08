@@ -83,6 +83,11 @@ const routes = [
     name: "GenreInfo",
     component: () => import("../components/GenreInfo.vue"),
   },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "notFound",
+    component: () => import("../components/NotFound.vue"),
+  },
 ];
 
 const router = createRouter({
