@@ -1,10 +1,10 @@
 <template>
-  <h1>Неизвестная адресс</h1>
+  <h1>Извините старница не найдена</h1>
 </template>
 
 <script>
 export default {
-  setup() {
+  data() {
     return {};
   },
 };

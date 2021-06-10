@@ -1,5 +1,9 @@
 <template>
-  <h3 v-if="genreInfo.length === 0">Список жанров пуст</h3>
+  <h3 v-if="errors === 404">
+    Жанр с таки <strong>ID</strong> {{ $route.params.id }} не найден
+  </h3>
+  <h3 v-else-if="genreInfo.length === 0">Список жанров пуст</h3>
+
   <div v-else class="">
     <h1 class="text-6xl">{{ genreInfo.genre.name }}</h1>
     <ul>
@@ -27,13 +31,17 @@ export default {
   data() {
     return {
       genreInfo: [],
+      errors: null,
     };
   },
   async mounted() {
     try {
-      this.genreInfo = await Genre.getGenreDetail(this.$route.params.id);
-    } catch (e) {
-      console.log(e);
+      const url = `${process.env.VUE_APP_SERVER_URL}/catalog/genre/${this.$route.params.id}`;
+      const res = await axios(url);
+      this.genreInfo = await res.data;
+      console.log(this.genreInfo);
+    } catch (error) {
+      this.errors = error.response.status;
     }
   },
 };

@@ -1,7 +1,14 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <atom-spinner
+    class="text-left flex flex-col items-center"
+    :animation-duration="1000"
+    :size="60"
+    :color="'#ff1d5e'"
+    v-if="loading"
+  />
+  <div v-else class="flex flex-col justify-center items-center">
     <h1 class="mb-7 text-3xl">Обновление книги</h1>
-    <form class="w-full max-w-lg mb-6" @submit.prevent="addBook">
+    <form class="w-full max-w-lg mb-6" @submit.prevent="update">
       <div class="flex flex-wrap -mx-3 mb-6 relative">
         <div class="w-full md:w-1/2 px-3 md:mb-0">
           <label
@@ -19,10 +26,6 @@
           </label>
 
           <form-input :placeholder="'Jane'" v-model="title" />
-
-          <p class="text-red-500 text-xs italic error-msg" v-if="errorTitle">
-            {{ errorTitle }}
-          </p>
         </div>
       </div>
       <div class="flex flex-wrap -mx-3 mb-6">
@@ -43,12 +46,15 @@
 
           <form-input :placeholder="'ISBN'" v-model="isbn" />
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
           {{ isbn }}
 >>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
           <p class="text-red-500 text-xs italic error-msg" v-if="errorIsbn">
             {{ errorIsbn }}
           </p>
+=======
+>>>>>>> origin/home
         </div>
       </div>
       <div class="flex flex-wrap -mx-3 mb-3">
@@ -69,10 +75,14 @@
             <label
               class="inline-flex items-center ml-6"
 <<<<<<< HEAD
+<<<<<<< HEAD
               v-for="g in checkbox.genres"
 =======
               v-for="g in genreList"
 >>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
+=======
+              v-for="g in book.genres"
+>>>>>>> origin/home
               :key="g._id"
             >
               <input
@@ -80,11 +90,15 @@
                 class="form-radio"
                 name="accountType"
                 :value="g._id"
+<<<<<<< HEAD
                 v-model="checkedGenre"
 <<<<<<< HEAD
                 :checked="g.checked"
 =======
 >>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
+=======
+                v-model="genre"
+>>>>>>> origin/home
               />
               <span class="ml-2">{{ g.name }}</span>
             </label>
@@ -122,22 +136,23 @@
                 focus:bg-white
                 focus:border-gray-500
               "
-              :class="{ 'border-red-500': errorAuthor }"
               v-model="author"
               id="grid-state"
             >
+<<<<<<< HEAD
 <<<<<<< HEAD
               <option v-for="a in checkbox.authors" :key="a._id" :value="a._id">
 =======
               <option selected disabled value="">Selected author</option>
               <option v-for="a in authorList" :key="a._id" :value="a._id">
 >>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
+=======
+              <!-- <option selected disabled value="">Selected author</option> -->
+              <option v-for="a in book.authors" :key="a._id" :value="a._id">
+>>>>>>> origin/home
                 {{ a.first_name }}
               </option>
             </select>
-            <p class="text-red-500 text-xs italic error-msg" v-if="errorAuthor">
-              {{ errorAuthor }}
-            </p>
             <div
               class="
                 pointer-events-none
@@ -178,9 +193,6 @@
           </label>
 
           <form-input :placeholder="'902101'" v-model="summary" />
-          <p class="text-red-500 text-xs italic error-msg" v-if="errorSummary">
-            {{ errorSummary }}
-          </p>
         </div>
       </div>
       <button class="btn btn-blue" type="submit">Отправить</button>
@@ -194,14 +206,19 @@ import axios from "axios";
 import FormInput from "../components/FormInput";
 =======
 import FormInput from "../components/FormInput";
+import updateBook from "../api/updateBook";
+import { AtomSpinner } from "epic-spinners";
+
 import axios from "axios";
 >>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
 
 export default {
   components: {
     FormInput,
+    AtomSpinner,
   },
   data() {
+<<<<<<< HEAD
 <<<<<<< HEAD
     return {
       checkbox: null,
@@ -230,13 +247,54 @@ export default {
     this.isbn = data.book.isbn;
 =======
     return {};
+=======
+    return {
+      loading: true,
+      book: null,
+
+      summary: "",
+      title: "",
+      isbn: "",
+      author: "",
+      genre: [],
+    };
+>>>>>>> origin/home
   },
   async mounted() {
     const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}/update`;
 
     const { data } = await axios.get(url);
+<<<<<<< HEAD
     console.log(data);
 >>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
+=======
+    data.book.genre.forEach((books) => {
+      data.genres.forEach((genre) => {
+        if (books._id === genre._id) {
+          this.genre.push(genre._id);
+        }
+      });
+    });
+
+    this.book = data;
+    this.loading = false;
+  },
+  methods: {
+    async update() {
+      const book = {
+        summary: this.summary,
+        title: this.title,
+        isbn: this.isbn,
+        author: this.author,
+        genre: this.genre,
+      };
+      console.log(book);
+      await updateBook(this.$route.params.id, {
+        ...book,
+        id: this.$route.params.id,
+      });
+    },
+>>>>>>> origin/home
   },
 };
 </script>

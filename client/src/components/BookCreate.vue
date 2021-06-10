@@ -205,7 +205,6 @@ export default {
   methods: {
     async addBook() {
       this.clearFormError();
-      console.log(this.title, this.isbn, this.author);
       try {
         await Book.createBook({
           isbn: this.isbn,
