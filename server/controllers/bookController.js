@@ -184,7 +184,11 @@ exports.book_delete_post = function (req, res, next) {
 };
 
 // Display book update form on GET.
+<<<<<<< HEAD
 exports.book_update_get = function (req, res, next) {
+=======
+exports.book_update_get = function (req, res) {
+>>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
   async.parallel(
     {
       book(callback) {
@@ -213,25 +217,26 @@ exports.book_update_get = function (req, res, next) {
       // Success.
       // Mark our selected genres as checked.
       for (
-        let all_g_iter = 0;
-        all_g_iter < results.genres.length;
-        all_g_iter++
+        let iterGenre = 0;
+        iterGenre < results.genres.length;
+        iterGenre++
       ) {
         for (
-          let book_g_iter = 0;
-          book_g_iter < results.book.genre.length;
-          book_g_iter++
+          let iterBookGenre = 0;
+          iterBookGenre < results.book.genre.length;
+          iterBookGenre++
         ) {
           if (
-            results.genres[all_g_iter]._id.toString() ==
-            results.book.genre[book_g_iter]._id.toString()
+            results.genres[iterGenre]._id.toString() ===
+            results.book.genre[iterBookGenre]._id.toString()
           ) {
-            results.genres[all_g_iter].checked = "true";
+            results.genres[iterGenre].checked = "true";
+            console.log(results.genres[iterGenre]);
           }
         }
       }
-      console.log(typeof results.genres);
-      res.send({
+      console.log(results.genres[3].checked);
+      res.json({
         title: "Update Book",
         authors: results.authors,
         genres: results.genres,

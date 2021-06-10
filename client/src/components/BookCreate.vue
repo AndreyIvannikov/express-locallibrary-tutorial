@@ -1,5 +1,6 @@
 <template>
-  <div class="flex justify-center">
+  <div class="flex flex-col justify-center items-center">
+    <h1 class="mb-7 text-3xl">Создание новой книги</h1>
     <form class="w-full max-w-lg mb-6" @submit.prevent="addBook">
       <div class="flex flex-wrap -mx-3 mb-6 relative">
         <div class="w-full md:w-1/2 px-3 md:mb-0">

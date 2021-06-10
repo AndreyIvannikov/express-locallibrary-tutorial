@@ -1,5 +1,7 @@
 <template>
-  <div class="flex justify-center">
+  <div class="flex justify-center flex-col items-center">
+    <h1 class="mb-7 text-3xl">Создание нового жанра</h1>
+
     <form class="w-full max-w-sm" @submit.prevent="addGenre">
       <div class="flex items-center border-b border-teal-500 py-2">
         <input

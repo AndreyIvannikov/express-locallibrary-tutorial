@@ -1,6 +1,6 @@
 <template>
-  <p v-if="checkbox === null">loading...</p>
-  <div v-else class="flex justify-center">
+  <div class="flex flex-col justify-center items-center">
+    <h1 class="mb-7 text-3xl">Обновление книги</h1>
     <form class="w-full max-w-lg mb-6" @submit.prevent="addBook">
       <div class="flex flex-wrap -mx-3 mb-6 relative">
         <div class="w-full md:w-1/2 px-3 md:mb-0">
@@ -42,6 +42,10 @@
           </label>
 
           <form-input :placeholder="'ISBN'" v-model="isbn" />
+<<<<<<< HEAD
+=======
+          {{ isbn }}
+>>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
           <p class="text-red-500 text-xs italic error-msg" v-if="errorIsbn">
             {{ errorIsbn }}
           </p>
@@ -64,7 +68,11 @@
           <div class="mt-2">
             <label
               class="inline-flex items-center ml-6"
+<<<<<<< HEAD
               v-for="g in checkbox.genres"
+=======
+              v-for="g in genreList"
+>>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
               :key="g._id"
             >
               <input
@@ -73,7 +81,10 @@
                 name="accountType"
                 :value="g._id"
                 v-model="checkedGenre"
+<<<<<<< HEAD
                 :checked="g.checked"
+=======
+>>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
               />
               <span class="ml-2">{{ g.name }}</span>
             </label>
@@ -115,7 +126,12 @@
               v-model="author"
               id="grid-state"
             >
+<<<<<<< HEAD
               <option v-for="a in checkbox.authors" :key="a._id" :value="a._id">
+=======
+              <option selected disabled value="">Selected author</option>
+              <option v-for="a in authorList" :key="a._id" :value="a._id">
+>>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
                 {{ a.first_name }}
               </option>
             </select>
@@ -173,14 +189,20 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import axios from "axios";
 import FormInput from "../components/FormInput";
+=======
+import FormInput from "../components/FormInput";
+import axios from "axios";
+>>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
 
 export default {
   components: {
     FormInput,
   },
   data() {
+<<<<<<< HEAD
     return {
       checkbox: null,
       author: "",
@@ -206,6 +228,15 @@ export default {
     this.title = data.book.title;
     this.summary = data.book.summary;
     this.isbn = data.book.isbn;
+=======
+    return {};
+  },
+  async mounted() {
+    const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}/update`;
+
+    const { data } = await axios.get(url);
+    console.log(data);
+>>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
   },
 };
 </script>

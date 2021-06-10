@@ -26,7 +26,9 @@
     </div>
 
     <button class="btn btn-blue" @click="showModal">Delete book</button>
-    <router-link :to="`${$route.params.id}/update`">Обнвоить</router-link>
+    <router-link :to="`/catalog/book/${$route.params.id}/update`"
+      >Обнвоить book</router-link
+    >
     <modal-delete v-show="isModalVisible" @close="closeModal">
       <template #header> Удаление книги {{ title }} ?</template>
       <template #body> Вы действительно хотите удалить кингу ?</template>
