@@ -59,6 +59,11 @@ const routes = [
     component: () => import("../components/AuthorCreate.vue"),
   },
   {
+    path: "/catalog/author/:id/update",
+    name: "AuthorUpdate",
+    component: () => import("../components/AuthorUpdate.vue"),
+  },
+  {
     path: "/catalog/author/:id",
     name: "AuthorInfo",
     component: () => import("../components/AuthorInfo.vue"),

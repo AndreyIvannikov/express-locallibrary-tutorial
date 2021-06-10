@@ -31,6 +31,11 @@
       :to="`/catalog/author/${$route.params.id}/delete`"
       >Delete author</router-link
     >
+    <router-link
+      class="underline text-blue-500"
+      :to="`/catalog/author/${$route.params.id}/update`"
+      >Update author</router-link
+    >
   </div>
 </template>
 

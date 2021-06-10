@@ -73,7 +73,6 @@
                 name="accountType"
                 :value="g._id"
                 v-model="genre"
-                :checked="g.checked"
               />
               <span class="ml-2">{{ g.name }}</span>
             </label>
@@ -111,7 +110,6 @@
                 focus:bg-white
                 focus:border-gray-500
               "
-              :class="{ 'border-red-500': errorAuthor }"
               v-model="author"
               id="grid-state"
             >
@@ -195,17 +193,16 @@ export default {
     const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}/update`;
 
     const { data } = await axios.get(url);
-
     data.book.genre.forEach((books) => {
       data.genres.forEach((genre) => {
         if (books._id === genre._id) {
-          genre.checked = "true";
+          this.genre.push(genre._id);
         }
       });
     });
+
     this.book = data;
     this.loading = false;
-    console.log(data);
   },
   methods: {
     async update() {

@@ -204,15 +204,12 @@ exports.book_update_get = function (req, res) {
         Genre.find(callback);
       },
     },
-    (err, results) => {
+    (err, results, next) => {
       if (err) {
-        return next(err);
+        return res.status(404).json({ title: "Not found" });
       }
       if (results.book == null) {
-        // No results.
-        var err = new Error("Book not found");
-        err.status = 404;
-        return next(err);
+        return res.status(400).json({ errors: err });
       }
       // Success.
       // Mark our selected genres as checked.
@@ -235,7 +232,6 @@ exports.book_update_get = function (req, res) {
           }
         }
       }
-      console.log(results.genres[3].checked);
       res.json({
         title: "Update Book",
         authors: results.authors,
