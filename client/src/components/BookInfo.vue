@@ -84,7 +84,7 @@ export default {
       const { data } = await axios.get(url);
       console.log(data);
       this.book = data.book;
-      this.booksCopy = data.bookCopy;
+      this.genre = data.bookCopy;
       this.title = data.title;
       console.log(this.booksCopy);
     } catch (error) {

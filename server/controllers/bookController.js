@@ -1,5 +1,9 @@
 const async = require("async");
-const { body, validationResult } = require("express-validator");
+const {
+  body,
+  validationResult,
+  check,
+} = require("express-validator");
 const Book = require("../models/book");
 const Author = require("../models/author");
 const Genre = require("../models/genre");
@@ -243,6 +247,60 @@ exports.book_update_get = function (req, res) {
 };
 
 // Handle book update on POST.
-exports.book_update_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: Book update POST");
-};
+exports.book_update_post = [
+  (req, res, next) => {
+    if (!(req.body.genre instanceof Array)) {
+      if (typeof req.body.genre === "undefined") req.body.genre = [];
+      else req.body.genre = new Array(req.body.genre);
+    }
+    next();
+  },
+
+  body("isbn", "ISBN must not be empty")
+    .isLength({ min: 1 })
+    .trim()
+    .escape(),
+  body("summary", "Summary must not be empty.")
+    .isLength({ min: 1 })
+    .trim()
+    .escape(),
+  body("title", "Title must not be empty.")
+    .isLength({ min: 1 })
+    .trim()
+    .escape(),
+  body("author", "Author must not be empty.")
+    .isLength({ min: 1 })
+    .trim()
+    .escape(),
+  check("genre.*").trim().escape(),
+  (req, res, next) => {
+    console.log(req.params.id);
+
+    const errors = validationResult(req);
+    const book = new Book({
+      title: req.body.title,
+      author: req.body.author,
+      summary: req.body.summary,
+      isbn: req.body.isbn,
+      genre:
+        typeof req.body.genre === "undefined" ? [] : req.body.genre,
+      _id: req.params.id, // This is required, or a new ID will be assigned!
+    });
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    Book.findByIdAndUpdate(
+      req.params.id,
+      book,
+      {},
+      (err, thebook) => {
+        if (err) {
+          return next(err);
+        }
+        // Successful - redirect to book detail page.
+        res.status(200).send(thebook);
+      }
+    );
+  },
+];

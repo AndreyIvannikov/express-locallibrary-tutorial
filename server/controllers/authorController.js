@@ -95,7 +95,6 @@ exports.author_create_post = [
       date_of_death: req.body.dateOfDeath,
     });
     author.save((err) => {
-      console.log(author);
       if (err) {
         return next(err);
       }

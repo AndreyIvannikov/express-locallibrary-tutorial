@@ -19,6 +19,7 @@ const mongoDB = "mongodb://localhost:27017/test";
 mongoose.connect(mongoDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 });
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;

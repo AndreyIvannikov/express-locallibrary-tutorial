@@ -1,7 +1,14 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <atom-spinner
+    class="text-left flex flex-col items-center"
+    :animation-duration="1000"
+    :size="60"
+    :color="'#ff1d5e'"
+    v-if="loading"
+  />
+  <div v-else class="flex flex-col justify-center items-center">
     <h1 class="mb-7 text-3xl">Обновление книги</h1>
-    <form class="w-full max-w-lg mb-6" @submit.prevent="addBook">
+    <form class="w-full max-w-lg mb-6" @submit.prevent="update">
       <div class="flex flex-wrap -mx-3 mb-6 relative">
         <div class="w-full md:w-1/2 px-3 md:mb-0">
           <label
@@ -19,10 +26,6 @@
           </label>
 
           <form-input :placeholder="'Jane'" v-model="title" />
-
-          <p class="text-red-500 text-xs italic error-msg" v-if="errorTitle">
-            {{ errorTitle }}
-          </p>
         </div>
       </div>
       <div class="flex flex-wrap -mx-3 mb-6">
@@ -42,10 +45,6 @@
           </label>
 
           <form-input :placeholder="'ISBN'" v-model="isbn" />
-          {{ isbn }}
-          <p class="text-red-500 text-xs italic error-msg" v-if="errorIsbn">
-            {{ errorIsbn }}
-          </p>
         </div>
       </div>
       <div class="flex flex-wrap -mx-3 mb-3">
@@ -65,7 +64,7 @@
           <div class="mt-2">
             <label
               class="inline-flex items-center ml-6"
-              v-for="g in genreList"
+              v-for="g in book.genres"
               :key="g._id"
             >
               <input
@@ -73,7 +72,8 @@
                 class="form-radio"
                 name="accountType"
                 :value="g._id"
-                v-model="checkedGenre"
+                v-model="genre"
+                :checked="g.checked"
               />
               <span class="ml-2">{{ g.name }}</span>
             </label>
@@ -115,14 +115,11 @@
               v-model="author"
               id="grid-state"
             >
-              <option selected disabled value="">Selected author</option>
-              <option v-for="a in authorList" :key="a._id" :value="a._id">
+              <!-- <option selected disabled value="">Selected author</option> -->
+              <option v-for="a in book.authors" :key="a._id" :value="a._id">
                 {{ a.first_name }}
               </option>
             </select>
-            <p class="text-red-500 text-xs italic error-msg" v-if="errorAuthor">
-              {{ errorAuthor }}
-            </p>
             <div
               class="
                 pointer-events-none
@@ -163,9 +160,6 @@
           </label>
 
           <form-input :placeholder="'902101'" v-model="summary" />
-          <p class="text-red-500 text-xs italic error-msg" v-if="errorSummary">
-            {{ errorSummary }}
-          </p>
         </div>
       </div>
       <button class="btn btn-blue" type="submit">Отправить</button>
@@ -175,20 +169,59 @@
 
 <script>
 import FormInput from "../components/FormInput";
+import updateBook from "../api/updateBook";
+import { AtomSpinner } from "epic-spinners";
+
 import axios from "axios";
 
 export default {
   components: {
     FormInput,
+    AtomSpinner,
   },
   data() {
-    return {};
+    return {
+      loading: true,
+      book: null,
+
+      summary: "",
+      title: "",
+      isbn: "",
+      author: "",
+      genre: [],
+    };
   },
   async mounted() {
     const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}/update`;
 
     const { data } = await axios.get(url);
+
+    data.book.genre.forEach((books) => {
+      data.genres.forEach((genre) => {
+        if (books._id === genre._id) {
+          genre.checked = "true";
+        }
+      });
+    });
+    this.book = data;
+    this.loading = false;
     console.log(data);
+  },
+  methods: {
+    async update() {
+      const book = {
+        summary: this.summary,
+        title: this.title,
+        isbn: this.isbn,
+        author: this.author,
+        genre: this.genre,
+      };
+      console.log(book);
+      await updateBook(this.$route.params.id, {
+        ...book,
+        id: this.$route.params.id,
+      });
+    },
   },
 };
 </script>
