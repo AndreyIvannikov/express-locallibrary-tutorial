@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import Author from "../api/Author";
 export default {
   data() {
     return {
@@ -44,9 +44,10 @@ export default {
   },
   async mounted() {
     try {
-      const url = `${process.env.VUE_APP_SERVER_URL}/catalog/author/${this.$route.params.id}`;
-      const { data } = await axios(url);
-      this.authorInfo = await data;
+      // const url = `${process.env.VUE_APP_SERVER_URL}/catalog/author/${this.$route.params.id}`;
+      // const { data } = await axios(url);
+      // this.authorInfo = await data;
+      this.authorInfo = await Author.getAuthorDetail(this.$route.params.id);
     } catch (e) {
       console.log(e);
     }

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import Genre from "../api/Genre";
 export default {
   data() {
     return {
@@ -31,10 +31,7 @@ export default {
   },
   async mounted() {
     try {
-      const url = `${process.env.VUE_APP_SERVER_URL}/catalog/genre/${this.$route.params.id}`;
-      const { data } = await axios(url);
-      this.genreInfo = await data;
-      console.log(this.genreInfo);
+      this.genreInfo = await Genre.getGenreDetail(this.$route.params.id);
     } catch (e) {
       console.log(e);
     }

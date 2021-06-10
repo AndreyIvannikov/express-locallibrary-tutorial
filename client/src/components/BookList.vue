@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import getBookList from "../api/getBookList";
+import Book from "../api/Book";
 export default {
   data() {
     return {
@@ -22,7 +22,7 @@ export default {
     };
   },
   async mounted() {
-    this.bookList = await getBookList();
+    this.bookList = await Book.getBookList();
     console.log(this.bookList);
   },
 };

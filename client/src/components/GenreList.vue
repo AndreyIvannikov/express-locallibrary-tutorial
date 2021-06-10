@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import getGenreInfo from "../api/getGenreList";
+import Genre from "../api/Genre";
 export default {
   data() {
     return {
@@ -20,7 +20,7 @@ export default {
     };
   },
   async mounted() {
-    this.genreInfo = await getGenreInfo();
+    this.genreInfo = await Genre.getGenreDetail();
   },
 };
 </script>

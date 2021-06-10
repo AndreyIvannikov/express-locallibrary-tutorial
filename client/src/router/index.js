@@ -24,6 +24,11 @@ const routes = [
     component: () => import("../components/BookInfo.vue"),
   },
   {
+    path: "/catalog/book/:id/update",
+    name: "BookUpdate",
+    component: () => import("../components/BookUpdate.vue"),
+  },
+  {
     path: "/catalog/book/create",
     name: "BookCreate",
     component: () => import("../components/BookCreate.vue"),
@@ -77,6 +82,10 @@ const routes = [
     path: "/catalog/genre/:id",
     name: "GenreInfo",
     component: () => import("../components/GenreInfo.vue"),
+  },
+  {
+    path: "/*/",
+    component: () => import("../components/NotFound.vue"),
   },
 ];
 

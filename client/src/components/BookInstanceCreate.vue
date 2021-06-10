@@ -205,8 +205,8 @@
 </template>
 
 <script>
-import getBookList from "../api/getBookList";
-import createBookInstance from "../api/createBookInstance";
+import Book from "../api/Book";
+import BookInstance from "../api/BookInstance";
 import FormInput from "../components/FormInput";
 export default {
   components: { FormInput },
@@ -221,12 +221,12 @@ export default {
   },
 
   async mounted() {
-    this.bookList = await getBookList();
+    this.bookList = await Book.getBookList();
   },
 
   methods: {
     async addBookInstance() {
-      await createBookInstance({
+      await BookInstance.createBookInstance({
         book: this.book,
         imprint: this.imprint,
         status: this.status,

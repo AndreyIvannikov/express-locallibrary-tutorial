@@ -35,23 +35,21 @@ app.use(express.json());
 app.use("/users", users);
 app.use("/catalog", catalogRouter);
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
-});
-
-// app.use((req, res, next) => {
-//   const err = new Error("Not Found");
-//   err.status = 404;
-//   next(err);
+// app.use((err, req, res, next) => {
+//   console.error(243512);
+//   res.status(500).send("Something broke!");
 // });
 
 app.use((err, req, res, next) => {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  res.status(err.status || 500);
+  // res.locals.message = err.message;
+  // res.locals.error = req.app.get("env") === "development" ? err : {};
+  // res.status(err.status || 500).send('sa')
+  if (res.headersSent) {
+    return next(err);
+  }
+  res.status(500);
+  res.send({ error: 'err' });
 });
 
 // myEmitter.emit("error", () => {

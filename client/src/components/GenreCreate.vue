@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import createGenre from "../api/createGenre";
+import Genre from "../api/Genre";
 export default {
   data() {
     return {
@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     async addGenre() {
-      this.error = await createGenre({ name: this.genres });
+      this.error = await Genre.createGenre({ name: this.genres });
     },
   },
 };

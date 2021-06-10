@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import getBookListInstance from "../api/getBookListInstance";
+import BookInstance from "../api/BookInstance";
 export default {
   data() {
     return {
@@ -31,7 +31,7 @@ export default {
   },
 
   async mounted() {
-    this.BookListInstance = await getBookListInstance();
+    this.BookListInstance = await BookInstance.getBookInstanceList();
   },
 
   methods: {

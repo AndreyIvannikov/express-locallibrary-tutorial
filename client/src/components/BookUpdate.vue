@@ -1,5 +1,6 @@
 <template>
-  <div class="flex justify-center">
+  <p v-if="checkbox === null">loading...</p>
+  <div v-else class="flex justify-center">
     <form class="w-full max-w-lg mb-6" @submit.prevent="addBook">
       <div class="flex flex-wrap -mx-3 mb-6 relative">
         <div class="w-full md:w-1/2 px-3 md:mb-0">
@@ -41,7 +42,6 @@
           </label>
 
           <form-input :placeholder="'ISBN'" v-model="isbn" />
-          {{ isbn }}
           <p class="text-red-500 text-xs italic error-msg" v-if="errorIsbn">
             {{ errorIsbn }}
           </p>
@@ -64,7 +64,7 @@
           <div class="mt-2">
             <label
               class="inline-flex items-center ml-6"
-              v-for="g in genreList"
+              v-for="g in checkbox.genres"
               :key="g._id"
             >
               <input
@@ -73,6 +73,7 @@
                 name="accountType"
                 :value="g._id"
                 v-model="checkedGenre"
+                :checked="g.checked"
               />
               <span class="ml-2">{{ g.name }}</span>
             </label>
@@ -114,8 +115,7 @@
               v-model="author"
               id="grid-state"
             >
-              <option selected disabled value="">Selected author</option>
-              <option v-for="a in authorList" :key="a._id" :value="a._id">
+              <option v-for="a in checkbox.authors" :key="a._id" :value="a._id">
                 {{ a.first_name }}
               </option>
             </select>
@@ -173,89 +173,41 @@
 </template>
 
 <script>
-import Author from "../api/Author";
-import Genre from "../api/Genre";
-import Book from "../api/Book";
+import axios from "axios";
 import FormInput from "../components/FormInput";
+
 export default {
   components: {
     FormInput,
   },
   data() {
     return {
-      genreList: [],
-      authorList: [],
-      checkedGenre: [],
-      isbn: null,
+      checkbox: null,
       author: "",
-      title: null,
-      summary: null,
-
-      errorIsbn: null,
-      errorAuthor: null,
-      errorTitle: null,
-      errorSummary: null,
+      title: "",
+      summary: "",
+      isbn: "",
     };
   },
   async mounted() {
-    this.genreList = await Genre.getGenresList();
-    this.authorList = await Author.getAuthorsList();
-  },
-  methods: {
-    async addBook() {
-      this.clearFormError();
-      console.log(this.title, this.isbn, this.author);
-      try {
-        await Book.createBook({
-          isbn: this.isbn,
-          genre: this.checkedGenre,
-          author: this.author,
-          title: this.title,
-          summary: this.summary,
-        });
-        this.clearForm();
-      } catch (error) {
-        let errorFields = error.response.data.errors;
-        errorFields.forEach(({ param, msg }) => {
-          if (param === "isbn") {
-            this.errorIsbn = msg;
-          }
+    const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}/update`;
+    const { data } = await axios.get(url);
 
-          if (param === "author") {
-            this.errorAuthor = msg;
-          }
-          if (param === "title") {
-            this.errorTitle = msg;
-          }
-          if (param === "summary") {
-            this.errorSummary = msg;
-            return this.errorSummary;
-          }
-        });
-      }
-    },
+    await data.genres.forEach((genre) => {
+      return data.book.genre.forEach((genreBook) => {
+        if (genre._id === genreBook._id) {
+          genre.checked = true;
+        }
+      });
+    });
 
-    clearForm() {
-      this.isbn = "";
-      this.checkedGenre = "";
-      this.author = "";
-      this.title = "";
-      this.summary = "";
-    },
-
-    clearFormError() {
-      this.errorIsbn = "";
-      this.errorAuthor = "";
-      this.errorTitle = "";
-      this.errorSummary = "";
-    },
+    this.checkbox = await data;
+    this.author = data.book.author._id;
+    this.title = data.book.title;
+    this.summary = data.book.summary;
+    this.isbn = data.book.isbn;
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.error-msg {
-  position: absolute;
-  left: 30%;
-}
-</style>
+<style lang="scss" scoped></style>

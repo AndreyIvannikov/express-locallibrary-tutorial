@@ -157,7 +157,7 @@
 </template>
 
 <script>
-import createAuthor from "../api/createAuthor";
+import Author from "../api/Author";
 export default {
   data() {
     return {
@@ -169,7 +169,7 @@ export default {
   },
   methods: {
     async newAuthor() {
-      await createAuthor({
+      await Author.createAuthor({
         firstName: this.firstName,
         lastName: this.lastName,
         dateOfBirth: this.dateOfBirth,

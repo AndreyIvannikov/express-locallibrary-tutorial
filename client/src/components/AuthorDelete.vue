@@ -35,7 +35,7 @@
 
 <script>
 import getInfoAuthorDelete from "../api/getAuthorAndBooksDelete";
-import removeAuthor from "../api/deleteAuthor";
+import Author from "../api/Author";
 export default {
   data() {
     return {
@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     async deleteAuthor() {
-      await removeAuthor(this.$route.params.id);
+      await Author.deleteAuthor(this.$route.params.id);
       this.$router.push({ name: "AuthorList" });
     },
   },

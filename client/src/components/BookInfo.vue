@@ -26,6 +26,7 @@
     </div>
 
     <button class="btn btn-blue" @click="showModal">Delete book</button>
+    <router-link :to="`${$route.params.id}/update`">Обнвоить</router-link>
     <modal-delete v-show="isModalVisible" @close="closeModal">
       <template #header> Удаление книги {{ title }} ?</template>
       <template #body> Вы действительно хотите удалить кингу ?</template>
@@ -38,9 +39,9 @@
 </template>
 
 <script>
-import axios from "axios";
 import { AtomSpinner } from "epic-spinners";
 import ModalDelete from "./ModalDelete";
+import Book from "../api/Book";
 export default {
   components: { ModalDelete, AtomSpinner },
   data() {
@@ -61,24 +62,17 @@ export default {
     },
     async deleteBook() {
       this.loading = true;
-
-      const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}/delete`;
-      const data = await axios.post(url, {
-        id: this.$route.params.id,
-      });
+      Book.getBookDelete(this.$route.params.id);
       this.loading = false;
-      console.log(data);
     },
   },
   async mounted() {
     try {
       this.loading = true;
-      const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}`;
-      const { data } = await axios.get(url);
-      this.book = data.book;
-      this.booksCopy = data.bookCopy;
-      this.title = data.title;
-      console.log(this.booksCopy);
+      const bookInfo = await Book.getBookDetail(this.$route.params.id);
+      this.book = bookInfo.book;
+      this.booksCopy = bookInfo.bookCopy;
+      this.title = bookInfo.title;
     } catch (err) {
       console.log(err);
     } finally {

@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import getBookList from "../api/getBookList";
 export default {
   data() {
     return {

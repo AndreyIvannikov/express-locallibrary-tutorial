@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import getBookListInstanceInfo from "../api/getBookListInstanceInfo";
+import BookInstance from "../api/BookInstance";
 export default {
   data() {
     return {
@@ -35,7 +35,7 @@ export default {
   },
 
   async mounted() {
-    this.bookListInstanceInfo = await getBookListInstanceInfo(
+    this.bookListInstanceInfo = await BookInstance.getBookInstanceDetail(
       this.$route.params.id
     );
   },

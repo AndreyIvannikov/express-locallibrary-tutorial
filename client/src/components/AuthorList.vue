@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import getAuthorList from "../api/getAuthorList";
+import Author from "../api/Author";
 export default {
   data() {
     return {
@@ -25,8 +25,7 @@ export default {
     };
   },
   async mounted() {
-    this.authorList = await getAuthorList();
-    console.log(this.$route);
+    this.authorList = await Author.getAuthorsList();
   },
   methods: {
     dateConfig(date) {
