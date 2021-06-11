@@ -45,16 +45,6 @@
           </label>
 
           <form-input :placeholder="'ISBN'" v-model="isbn" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-          {{ isbn }}
->>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
-          <p class="text-red-500 text-xs italic error-msg" v-if="errorIsbn">
-            {{ errorIsbn }}
-          </p>
-=======
->>>>>>> origin/home
         </div>
       </div>
       <div class="flex flex-wrap -mx-3 mb-3">
@@ -74,15 +64,7 @@
           <div class="mt-2">
             <label
               class="inline-flex items-center ml-6"
-<<<<<<< HEAD
-<<<<<<< HEAD
-              v-for="g in checkbox.genres"
-=======
-              v-for="g in genreList"
->>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
-=======
               v-for="g in book.genres"
->>>>>>> origin/home
               :key="g._id"
             >
               <input
@@ -90,15 +72,7 @@
                 class="form-radio"
                 name="accountType"
                 :value="g._id"
-<<<<<<< HEAD
-                v-model="checkedGenre"
-<<<<<<< HEAD
-                :checked="g.checked"
-=======
->>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
-=======
                 v-model="genre"
->>>>>>> origin/home
               />
               <span class="ml-2">{{ g.name }}</span>
             </label>
@@ -139,17 +113,8 @@
               v-model="author"
               id="grid-state"
             >
-<<<<<<< HEAD
-<<<<<<< HEAD
-              <option v-for="a in checkbox.authors" :key="a._id" :value="a._id">
-=======
-              <option selected disabled value="">Selected author</option>
-              <option v-for="a in authorList" :key="a._id" :value="a._id">
->>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
-=======
               <!-- <option selected disabled value="">Selected author</option> -->
               <option v-for="a in book.authors" :key="a._id" :value="a._id">
->>>>>>> origin/home
                 {{ a.first_name }}
               </option>
             </select>
@@ -201,73 +166,29 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-import axios from "axios";
 import FormInput from "../components/FormInput";
-=======
-import FormInput from "../components/FormInput";
-import updateBook from "../api/updateBook";
+import Book from "../api/Book";
 import { AtomSpinner } from "epic-spinners";
-
 import axios from "axios";
->>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
-
 export default {
   components: {
     FormInput,
     AtomSpinner,
   },
   data() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    return {
-      checkbox: null,
-      author: "",
-      title: "",
-      summary: "",
-      isbn: "",
-    };
-  },
-  async mounted() {
-    const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}/update`;
-    const { data } = await axios.get(url);
-
-    await data.genres.forEach((genre) => {
-      return data.book.genre.forEach((genreBook) => {
-        if (genre._id === genreBook._id) {
-          genre.checked = true;
-        }
-      });
-    });
-
-    this.checkbox = await data;
-    this.author = data.book.author._id;
-    this.title = data.book.title;
-    this.summary = data.book.summary;
-    this.isbn = data.book.isbn;
-=======
-    return {};
-=======
     return {
       loading: true,
       book: null,
-
       summary: "",
       title: "",
       isbn: "",
       author: "",
       genre: [],
     };
->>>>>>> origin/home
   },
   async mounted() {
     const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}/update`;
-
     const { data } = await axios.get(url);
-<<<<<<< HEAD
-    console.log(data);
->>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
-=======
     data.book.genre.forEach((books) => {
       data.genres.forEach((genre) => {
         if (books._id === genre._id) {
@@ -275,8 +196,12 @@ export default {
         }
       });
     });
-
     this.book = data;
+    this.title = data.book.title;
+    this.summary = data.book.summary;
+    this.isbn = data.book.isbn;
+    this.author = data.book.author._id;
+    console.log(this.author);
     this.loading = false;
   },
   methods: {
@@ -288,13 +213,11 @@ export default {
         author: this.author,
         genre: this.genre,
       };
-      console.log(book);
-      await updateBook(this.$route.params.id, {
+      await Book.updatedBook(this.$route.params.id, {
         ...book,
         id: this.$route.params.id,
       });
     },
->>>>>>> origin/home
   },
 };
 </script>

@@ -188,11 +188,7 @@ exports.book_delete_post = function (req, res, next) {
 };
 
 // Display book update form on GET.
-<<<<<<< HEAD
-exports.book_update_get = function (req, res, next) {
-=======
 exports.book_update_get = function (req, res) {
->>>>>>> 1b31d1d2e2f5102e4e3bf3b583af7f21ae2d5ea8
   async.parallel(
     {
       book(callback) {

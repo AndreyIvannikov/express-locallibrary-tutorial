@@ -8,9 +8,7 @@
   />
   <div v-else class="flex flex-col justify-center items-center">
     <h1 class="mb-7 text-3xl">Обновление Автора</h1>
-    <form class="w-full max-w-lg" @submit.prevent="newAuthor">
-      <h1 class="mb-7 text-3xl">Создание нового автора</h1>
-
+    <form class="w-full max-w-lg" @submit.prevent="update">
       <div class="flex flex-wrap -mx-3 mb-6">
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
           <label
@@ -168,7 +166,7 @@
 
 <script>
 import { AtomSpinner } from "epic-spinners";
-
+import Author from "../api/Author";
 import axios from "axios";
 
 export default {
@@ -181,7 +179,9 @@ export default {
       book: null,
       author: null,
       lastName: "",
-      firstName: "2",
+      firstName: "",
+      dateOfBirth: "",
+      dateOfDeath: "",
     };
   },
   async mounted() {
@@ -191,10 +191,20 @@ export default {
     this.loading = false;
     this.firstName = this.author.first_name;
     this.lastName = this.author.family_name;
-    console.log(this.author);
+    this.dateOfBirth = this.author.date_of_birth;
+    this.dateOfDeath = this.author.date_of_death;
+    console.log(this.dateOfBirth);
   },
   methods: {
-    async update() {},
+    async update() {
+      const author = {
+        lastName: this.lastName,
+        firstName: this.firstName,
+        dateOfBirth: this.dateOfBirth,
+        dateOfDeath: this.dateOfDeath,
+      };
+      Author.updatedAuthor(this.$route.params.id, author);
+    },
   },
 };
 </script>

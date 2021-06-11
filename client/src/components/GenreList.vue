@@ -23,7 +23,7 @@ export default {
     };
   },
   async mounted() {
-    this.genreInfo = await Genre.getGenreDetail();
+    this.genreInfo = await Genre.getGenresList();
   },
 };
 </script>

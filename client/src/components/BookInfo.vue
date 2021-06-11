@@ -7,9 +7,10 @@
     v-if="loading"
   />
 
-  <h3 v-if="errors === 404">
+  <h3 v-else-if="errors === 404">
     Книга с таки <strong>ID</strong> {{ $route.params.id }} не найдена
   </h3>
+
   <h3 v-else-if="book.length === 0">Список книг пуст</h3>
   <div v-else class="text-left flex flex-col items-center">
     <div class="w-2/5 text-left flex flex-col justify-start m-5">
@@ -75,13 +76,11 @@ export default {
   async mounted() {
     try {
       this.loading = true;
-      const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${this.$route.params.id}`;
-      const { data } = await axios.get(url);
+      const data = await Book.getBookDetail(this.$route.params.id);
       console.log(data);
       this.book = data.book;
-      this.genre = data.bookCopy;
+      this.booksCopy = data.bookCopy;
       this.title = data.title;
-      console.log(this.booksCopy);
     } catch (error) {
       this.errors = error.response.status;
     } finally {

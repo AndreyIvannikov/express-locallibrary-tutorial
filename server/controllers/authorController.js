@@ -1,5 +1,9 @@
 const async = require("async");
-const { body, validationResult } = require("express-validator");
+const {
+  body,
+  validationResult,
+  check,
+} = require("express-validator");
 const Author = require("../models/author");
 const Book = require("../models/book");
 
@@ -175,6 +179,59 @@ exports.author_update_get = function (req, res) {
 };
 
 // Обновить автора по запросу POST.
-exports.author_update_post = function (req, res) {
-  res.send("NOT IMPLEMENTED: Author update POST");
-};
+exports.author_update_post = [
+  body("firstName")
+    .trim()
+    .isLength({ min: 3 })
+    .escape()
+    .withMessage("Необходимо указать имя")
+    .isAlphanumeric()
+    .withMessage("Имя должно состоять из буквенных симоволов"),
+
+  body("lastName")
+    .trim()
+    .isLength({ min: 3 })
+    .escape()
+    .withMessage("Необходимо указать фамилию")
+    .isAlphanumeric()
+    .withMessage("Фамилия должно состоять из буквенных симоволов"),
+
+  body("dateOfBirth", "Invalid date of birth")
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
+
+  body("dateOfDeath", "Invalid date of death")
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    const author = new Author({
+      first_name: req.body.firstName,
+      family_name: req.body.lastName,
+      date_of_birth: req.body.dateOfBirth,
+      date_of_death: req.body.dateOfDeath,
+      _id: req.params.id,
+    });
+
+    console.log(req.body);
+    console.log(author);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    console.log(req.params.id);
+    Author.findByIdAndUpdate(
+      req.params.id,
+      author,
+      {},
+      (err, thebook) => {
+        if (err) {
+          return next(err);
+        }
+        // Successful - redirect to book detail page.
+        res.status(200).send(thebook);
+      }
+    );
+  },
+];

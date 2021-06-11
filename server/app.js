@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const EventEmitter = require("events");
-const history = require("connect-history-api-fallback");
 
 const myEmitter = new EventEmitter();
 // const favicon = require('serve-favicon');
@@ -31,11 +30,6 @@ db.on(
 app.use(logger("dev"));
 app.use(cookieParser());
 app.use(cors());
-app.use(
-  history({
-    index: "/index.html",
-  })
-);
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", index);
 app.use(express.json());
@@ -61,7 +55,7 @@ app.use((err, req, res, next) => {
     return next(err);
   }
   res.status(500);
-  res.send({ error: 'err' });
+  res.send({ error: "err" });
 });
 
 // myEmitter.emit("error", () => {

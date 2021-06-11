@@ -1,6 +1,6 @@
 <template>
   <h1 v-if="!authorInfo">Авторов пока нет...</h1>
-  <div v-else class="mb-10">
+  <div v-else class="mb-10 flex flex-col justify-center items-center">
     <div class="mb-5">
       <h1 class="text-6xl">Author: {{ authorInfo.author.first_name }}</h1>
       <p>
@@ -26,16 +26,18 @@
         <p class="w-2/5">{{ books.summary }}</p>
       </li>
     </ul>
-    <router-link
-      class="underline text-blue-500"
-      :to="`/catalog/author/${$route.params.id}/delete`"
-      >Delete author</router-link
-    >
-    <router-link
-      class="underline text-blue-500"
-      :to="`/catalog/author/${$route.params.id}/update`"
-      >Update author</router-link
-    >
+    <div class="flex flex-col items-center w-60">
+      <router-link
+        class="btn btn-blue w-full text-blue-500 mb-3"
+        :to="`/catalog/author/${$route.params.id}/delete`"
+        >Delete author</router-link
+      >
+      <router-link
+        class="btn btn-blue text-blue-500 w-full"
+        :to="`/catalog/author/${$route.params.id}/update`"
+        >Update author</router-link
+      >
+    </div>
   </div>
 </template>
 

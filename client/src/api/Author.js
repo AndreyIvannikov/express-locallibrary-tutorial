@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "../router/index";
 
 class Author {
   async getAuthorDetail(id) {
@@ -40,6 +41,18 @@ class Author {
         const nameB = b.first_name;
         return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
       });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async updatedAuthor(id, author) {
+    console.log(author);
+    try {
+      const url = `${process.env.VUE_APP_SERVER_URL}/catalog/author/${id}/update`;
+      const data = await axios.post(url, author);
+      console.log(data);
+      router.push({ name: "Home" });
     } catch (err) {
       console.log(err);
     }

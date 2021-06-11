@@ -1,5 +1,16 @@
 <template>
-  <div class="flex flex-col justify-center items-center">
+  <h1 v-if="authorList.length === 0">
+    Вы не можете создать книгу для начала создайте
+    <router-link to="/catalog/author/create" class="underline"
+      >автора</router-link
+    >
+  </h1>
+  <h1 v-else-if="genreList.length === 0">
+    Вы не можете создать книгу для начала создайте
+    <router-link to="/catalog/genre/create" class="underline">жанр</router-link>
+  </h1>
+
+  <div v-else class="flex flex-col justify-center items-center">
     <h1 class="mb-7 text-3xl">Создание новой книги</h1>
     <form class="w-full max-w-lg mb-6" @submit.prevent="addBook">
       <div class="flex flex-wrap -mx-3 mb-6 relative">

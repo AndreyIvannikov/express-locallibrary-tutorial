@@ -24,6 +24,7 @@ class Genre {
   async deleteGenre() {}
 
   async getGenresList() {
+    console.log(123123);
     try {
       const url = `${process.env.VUE_APP_SERVER_URL}/catalog/genres`;
       const { data } = await axios.get(url);
@@ -32,6 +33,7 @@ class Genre {
       console.log(err);
     }
   }
+
 }
 
 export default new Genre();

@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "../router/index";
 
 class Book {
   async createBook(book) {
@@ -35,6 +36,16 @@ class Book {
       return data;
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  async updatedBook(id, book) {
+    try {
+      const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${id}/update`;
+      await axios.post(url, book);
+      router.push({ name: "AuthorList" });
+    } catch (err) {
+      console.log(err);
     }
   }
 }

@@ -36,10 +36,7 @@ export default {
   },
   async mounted() {
     try {
-      const url = `${process.env.VUE_APP_SERVER_URL}/catalog/genre/${this.$route.params.id}`;
-      const res = await axios(url);
-      this.genreInfo = await res.data;
-      console.log(this.genreInfo);
+      this.genreInfo = await Genre.getGenreDetail(this.$route.params.id);
     } catch (error) {
       this.errors = error.response.status;
     }
