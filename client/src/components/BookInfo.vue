@@ -18,6 +18,12 @@
       <p><strong> Author: </strong>{{ book.author.first_name }}</p>
       <p><strong> Summary: </strong>{{ book.summary }}</p>
       <p><strong> ISBN: </strong>{{ book.isbn }}</p>
+      <p>
+        <strong> Genre: </strong>
+        <span v-for="(book, index) in book.genre" :key="book._id"
+          >{{ book.name }}{{ index >= isBookLength - 1 ? "." : "," }}
+        </span>
+      </p>
       <hr />
     </div>
     <div class="w-2/5" v-if="booksCopy.length !== 0">
@@ -29,10 +35,16 @@
       </div>
     </div>
 
-    <button class="btn btn-blue" @click="showModal">Delete book</button>
-    <router-link :to="`/catalog/book/${$route.params.id}/update`"
-      >Обнвоить book</router-link
-    >
+    <div class="flex flex-col items-center w-60">
+      <button class="btn btn-blue w-full mb-3" @click="showModal">
+        Delete book
+      </button>
+      <ButtonUpdate
+        buttonUpdateText="Update book"
+        :linkUpdate="`/catalog/book/${$route.params.id}/update`"
+      />
+    </div>
+
     <modal-delete v-show="isModalVisible" @close="closeModal">
       <template #header> Удаление книги {{ title }} ?</template>
       <template #body> Вы действительно хотите удалить кингу ?</template>
@@ -47,9 +59,10 @@
 <script>
 import { AtomSpinner } from "epic-spinners";
 import ModalDelete from "./ModalDelete";
+import ButtonUpdate from "./ButtonUpdate.vue";
 import Book from "../api/Book";
 export default {
-  components: { ModalDelete, AtomSpinner },
+  components: { ModalDelete, AtomSpinner, ButtonUpdate },
   data() {
     return {
       book: [],
@@ -73,11 +86,15 @@ export default {
       this.loading = false;
     },
   },
+  computed: {
+    isBookLength() {
+      return this.book.genre.length;
+    },
+  },
   async mounted() {
     try {
       this.loading = true;
       const data = await Book.getBookDetail(this.$route.params.id);
-      console.log(data);
       this.book = data.book;
       this.booksCopy = data.bookCopy;
       this.title = data.title;

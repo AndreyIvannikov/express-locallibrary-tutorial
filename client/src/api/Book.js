@@ -31,7 +31,7 @@ class Book {
     try {
       const url = `${process.env.VUE_APP_SERVER_URL}/catalog/book/${id}/delete`;
       const data = await axios.post(url, {
-        id: this.$route.params.id,
+        id: id,
       });
       return data;
     } catch (e) {

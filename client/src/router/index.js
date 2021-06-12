@@ -10,8 +10,7 @@ const routes = [
   {
     path: "/about",
     name: "About",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    component: () => import("../views/About.vue"),
   },
   {
     path: "/catalog/books",
@@ -92,6 +91,16 @@ const routes = [
     path: "/catalog/genre/:id",
     name: "GenreInfo",
     component: () => import("../components/GenreInfo.vue"),
+  },
+  {
+    path: "/catalog/genre/:id/delete",
+    name: "GenreDelete",
+    component: () => import("../components/GenreDelete"),
+  },
+  {
+    path: "/catalog/genre/:id/update",
+    name: "GenreUpdate",
+    component: () => import("../components/GenreUpdate"),
   },
   {
     path: "/:pathMatch(.*)*",

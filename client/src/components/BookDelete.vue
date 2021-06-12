@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import getInfoAuthorDelete from "../api/getAuthorAndBooksDelete";
 export default {
   data() {
     return {

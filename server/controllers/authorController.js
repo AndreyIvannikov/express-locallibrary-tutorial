@@ -120,13 +120,10 @@ exports.author_delete_get = function (req, res, next) {
     },
     (err, results) => {
       if (err) {
-        console.log(req.params.id);
         return next(err);
       }
-      console.log(req.params.id);
 
       if (results.author == null) {
-        console.log("qdaqsdasdas");
         return next(err);
       }
       res.json({
@@ -215,12 +212,9 @@ exports.author_update_post = [
       _id: req.params.id,
     });
 
-    console.log(req.body);
-    console.log(author);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    console.log(req.params.id);
     Author.findByIdAndUpdate(
       req.params.id,
       author,

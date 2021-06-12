@@ -27,23 +27,24 @@
       </li>
     </ul>
     <div class="flex flex-col items-center w-60">
-      <router-link
-        class="btn btn-blue w-full text-blue-500 mb-3"
-        :to="`/catalog/author/${$route.params.id}/delete`"
-        >Delete author</router-link
-      >
-      <router-link
-        class="btn btn-blue text-blue-500 w-full"
-        :to="`/catalog/author/${$route.params.id}/update`"
-        >Update author</router-link
-      >
+      <ButtonDelete
+        :linkDelete="`/catalog/author/${$route.params.id}/delete`"
+        buttonDeleteText="Delete author"
+      />
+      <ButtonUpdate
+        :linkUpdate="`/catalog/author/${$route.params.id}/update`"
+        buttonUpdateText="Update author"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import Author from "../api/Author";
+import ButtonDelete from "../components/ButtonDelete.vue";
+import ButtonUpdate from "../components/ButtonUpdate.vue";
 export default {
+  components: { ButtonDelete, ButtonUpdate },
   data() {
     return {
       authorInfo: null,
@@ -51,9 +52,6 @@ export default {
   },
   async mounted() {
     try {
-      // const url = `${process.env.VUE_APP_SERVER_URL}/catalog/author/${this.$route.params.id}`;
-      // const { data } = await axios(url);
-      // this.authorInfo = await data;
       this.authorInfo = await Author.getAuthorDetail(this.$route.params.id);
     } catch (e) {
       console.log(e);
