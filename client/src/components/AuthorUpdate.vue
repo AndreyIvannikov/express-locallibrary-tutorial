@@ -1,11 +1,8 @@
 <template>
-  <atom-spinner
-    class="text-left flex flex-col items-center"
-    :animation-duration="1000"
-    :size="60"
-    :color="'#ff1d5e'"
-    v-if="loading"
-  />
+  <div class="flex justify-center items-center w-full" v-if="loading">
+    <atom-spinner :animation-duration="1000" :size="60" :color="'#ff1d5e'" />
+  </div>
+
   <div v-else class="flex flex-col justify-center items-center">
     <h1 class="mb-7 text-3xl">Обновление Автора</h1>
     <form class="w-full max-w-lg" @submit.prevent="update">

@@ -1,12 +1,13 @@
 <template>
-  <h3 v-if="authorList.length === 0">Список авторов пуст</h3>
+  <h1 v-if="loading">Загрузка...</h1>
+  <p v-else-if="authorList.authors.length === 0">{{ authorList.title }}</p>
   <div class="" v-else>
     <h1 class="mb-7 text-3xl">Список авторов</h1>
     <ul>
-      <li v-for="author in authorList" :key="author._id">
+      <li v-for="author in authorList.authors" :key="author._id">
         <strong>
           <router-link :to="`/catalog/author/${author._id}`">
-            {{ author.first_name }}</router-link
+            {{ author.first_name }} {{ author.family_name }}</router-link
           >
         </strong>
 
@@ -25,10 +26,12 @@ export default {
   data() {
     return {
       authorList: [],
+      loading: true,
     };
   },
   async mounted() {
     this.authorList = await Author.getAuthorsList();
+    this.loading = await false;
   },
   methods: {
     dateConfig(date) {

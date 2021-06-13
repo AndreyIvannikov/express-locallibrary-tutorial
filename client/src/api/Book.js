@@ -11,7 +11,8 @@ class Book {
     try {
       const url = `${process.env.VUE_APP_SERVER_URL}/catalog/books`;
       const { data } = await axios.get(url);
-      return data.book_list;
+      console.log(data);
+      return data;
     } catch (err) {
       console.log(err);
     }

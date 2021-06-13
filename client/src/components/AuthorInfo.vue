@@ -48,13 +48,14 @@ export default {
   data() {
     return {
       authorInfo: null,
+      notAuthor: null,
     };
   },
   async mounted() {
     try {
       this.authorInfo = await Author.getAuthorDetail(this.$route.params.id);
     } catch (e) {
-      console.log(e);
+      console.dir(e);
     }
   },
 };

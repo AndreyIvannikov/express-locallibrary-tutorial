@@ -1,11 +1,7 @@
 <template>
-  <atom-spinner
-    class="text-left flex flex-col items-center"
-    :animation-duration="1000"
-    :size="60"
-    :color="'#ff1d5e'"
-    v-if="loading"
-  />
+  <div class="flex justify-center items-center w-full" v-if="loading">
+    <atom-spinner :animation-duration="1000" :size="60" :color="'#ff1d5e'" />
+  </div>
 
   <h3 v-else-if="errors === 404">
     Книга с таки <strong>ID</strong> {{ $route.params.id }} не найдена

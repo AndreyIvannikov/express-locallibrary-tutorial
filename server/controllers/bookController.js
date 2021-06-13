@@ -47,13 +47,21 @@ exports.index = function (req, res) {
 exports.book_list = function (req, res, next) {
   Book.find({}, "title author")
     .populate("author")
-    .exec((err, listBook) => {
+    .exec((err, bookList) => {
       if (err) {
         return next(err);
       }
+
+      if (bookList.length === 0) {
+        return res.status(200).json({
+          bookList: [],
+          title: "Список книг пуст создайте книгу ...",
+        });
+      }
+
       res.send({
         title: "Book List",
-        book_list: listBook,
+        bookList,
       });
     });
 };

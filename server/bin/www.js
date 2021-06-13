@@ -1,8 +1,6 @@
 const app = require("../app");
-const debug = require("debug")(
-  "express-locallibrary-tutorial:server"
-);
 
-app.listen(5000, () => {
-  console.log("Подключен к серверу 5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Подключен к серверу ${PORT}`);
 });

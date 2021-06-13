@@ -1,11 +1,12 @@
 <template>
-  <h1 v-if="authorList.length === 0">
+  <h1 v-if="loading">Загрузка...</h1>
+  <h1 v-else-if="authorList.authors.length === 0">
     Вы не можете создать книгу для начала создайте
     <router-link to="/catalog/author/create" class="underline"
       >автора</router-link
     >
   </h1>
-  <h1 v-else-if="genreList.length === 0">
+  <h1 v-else-if="genreList.genreList.length === 0">
     Вы не можете создать книгу для начала создайте
     <router-link to="/catalog/genre/create" class="underline">жанр</router-link>
   </h1>
@@ -53,7 +54,6 @@
           </label>
 
           <form-input :placeholder="'ISBN'" v-model="isbn" />
-          {{ isbn }}
           <p class="text-red-500 text-xs italic error-msg" v-if="errorIsbn">
             {{ errorIsbn }}
           </p>
@@ -76,7 +76,7 @@
           <div class="mt-2">
             <label
               class="inline-flex items-center ml-6"
-              v-for="g in genreList"
+              v-for="g in genreList.genreList"
               :key="g._id"
             >
               <input
@@ -127,7 +127,11 @@
               id="grid-state"
             >
               <option selected disabled value="">Selected author</option>
-              <option v-for="a in authorList" :key="a._id" :value="a._id">
+              <option
+                v-for="a in authorList.authors"
+                :key="a._id"
+                :value="a._id"
+              >
                 {{ a.first_name }}
               </option>
             </select>
@@ -202,6 +206,7 @@ export default {
       author: "",
       title: null,
       summary: null,
+      loading: true,
 
       errorIsbn: null,
       errorAuthor: null,
@@ -212,6 +217,8 @@ export default {
   async mounted() {
     this.genreList = await Genre.getGenresList();
     this.authorList = await Author.getAuthorsList();
+    this.loading = await false;
+    console.log(this.genreList);
   },
   methods: {
     async addBook() {

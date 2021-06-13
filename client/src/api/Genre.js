@@ -16,6 +16,7 @@ class Genre {
     const url = `${process.env.VUE_APP_SERVER_URL}/catalog/genre/create`;
     try {
       await axios.post(url, genre);
+      await router.push({ name: "GenreList" });
       return null;
     } catch ({ response }) {
       return response.data.errors[0].msg;
@@ -29,9 +30,8 @@ class Genre {
       await axios.post(url, {
         id,
       });
-      router.push({ name: "AuthorList" });
+      await router.push({ name: "GenreList" });
     } catch ({ response }) {
-      console.log(response.data.errors[0].msg);
       return response.data.errors[0].msg;
     }
   }
@@ -40,9 +40,9 @@ class Genre {
     try {
       const url = `${process.env.VUE_APP_SERVER_URL}/catalog/genres`;
       const { data } = await axios.get(url);
-      return data.genreList;
+      return data;
     } catch (err) {
-      console.log(err);
+      console.dir(err);
     }
   }
 

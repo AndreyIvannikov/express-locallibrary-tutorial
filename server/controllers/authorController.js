@@ -11,12 +11,17 @@ const Book = require("../models/book");
 exports.author_list = function (req, res, next) {
   Author.find()
     .sort([["family_name", "ascending"]])
-    .exec((err, authorList) => {
+    .exec((err, authors) => {
       if (err) {
-        console.log("ошибка");
         return next(err);
       }
-      res.send({ authorList });
+      if (authors.length === 0) {
+        return res.status(200).json({
+          authors: [],
+          title: "Список авторов пуст создайте первого автора ...",
+        });
+      }
+      res.send({ authors });
     });
 };
 
@@ -33,13 +38,9 @@ exports.author_detail = function (req, res, next) {
     },
     (err, result) => {
       if (err) {
-        return next(err);
+        next(err);
       }
-      if (result.author === null) {
-        const error = new Error("Author not found");
-        error.status = 404;
-        return next(error);
-      }
+
       res.send({
         title: "Author Detail",
         author: result.author,

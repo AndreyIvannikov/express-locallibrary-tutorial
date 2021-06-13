@@ -8,7 +8,13 @@ const author = require("../models/author");
 exports.genre_list = function (req, res, next) {
   Genre.find().exec((err, genreList) => {
     if (err) {
-      return next(err);
+      return res.status(404).json({ err });
+    }
+    if (genreList.length === 0) {
+      return res.status(200).json({
+        genreList: [],
+        title: "Список жанров пуст создайте первый жанр...",
+      });
     }
     res.send({
       genreList,
@@ -109,7 +115,6 @@ exports.genre_delete_post = function (req, res, next) {
       }
 
       if (results.genre) {
-        console.log(results.genre);
         Genre.findByIdAndDelete({ _id: req.body.id }, () => {
           if (err) {
             return next(err);
