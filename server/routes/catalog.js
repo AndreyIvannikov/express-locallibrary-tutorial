@@ -6,6 +6,7 @@ const book_controller = require("../controllers/bookController");
 const author_controller = require("../controllers/authorController");
 const genre_controller = require("../controllers/genreController");
 const book_instance_controller = require("../controllers/bookinstanceController");
+const sendMessage = require("../controllers/messageConroller");
 
 /// BOOK ROUTES МАРШРУТЫ КНИГ///
 
@@ -96,6 +97,7 @@ router.get("/genre/:id", genre_controller.genre_detail);
 
 // GET request for list of all Genre.
 router.get("/genres", genre_controller.genre_list);
+router.post("/sendmessage", sendMessage.sendMessage);
 
 /// BOOKINSTANCE ROUTES ///
 

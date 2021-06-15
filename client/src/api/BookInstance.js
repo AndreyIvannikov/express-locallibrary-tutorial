@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import router from "../router/index";
 class BookInstance {
   async getBookInstanceDetail(id) {
     try {
@@ -7,7 +7,9 @@ class BookInstance {
       const { data } = await axios.get(url);
       return data;
     } catch (err) {
-      console.log(err);
+      if (err.response.status === 404) {
+        router.push({ name: "notFound" });
+      }
     }
   }
 
@@ -25,7 +27,9 @@ class BookInstance {
       const { data } = await axios.get(url);
       return data.bookListInsAll;
     } catch (err) {
-      console.log(err);
+      if (err.response.status === 404) {
+        router.push({ name: "notFound" });
+      }
     }
   }
 }

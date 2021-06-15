@@ -1,5 +1,4 @@
-const { body, validationResult } = require("express-validator/check");
-const { sanitizeBody } = require("express-validator/filter");
+const { body, validationResult } = require("express-validator");
 const BookInstance = require("../models/bookinstance");
 const Book = require("../models/book");
 // Display list of all BookInstances.
@@ -25,11 +24,6 @@ exports.bookinstance_detail = function (req, res, next) {
       if (err) {
         return next(err);
       }
-      if (bookinstance === null) {
-        const error = new Error("Not found");
-        error.status = 404;
-        return next(error);
-      }
       res.send({
         title: `Copy: ${bookinstance.book.title}`,
         bookinstance,
@@ -42,22 +36,22 @@ exports.bookinstance_create_get = function (req, res) {
   res.send("NOT IMPLEMENTED: BookInstance create GET");
 };
 
-// Handle BookInstance create on POST.
 exports.bookinstance_create_post = [
-  // Validate fields.
-  body("book", "Book must be specified").isLength({ min: 1 }).trim(),
+  body("book", "Book must be specified")
+    .isLength({ min: 1 })
+    .trim()
+    .escape(),
   body("imprint", "Imprint must be specified")
     .isLength({ min: 1 })
-    .trim(),
+    .trim()
+    .escape(),
   body("due_back", "Invalid date")
     .optional({ checkFalsy: true })
     .isISO8601(),
+  body("status").trim().escape(),
 
   // Sanitize fields.
-  sanitizeBody("book").escape(),
-  sanitizeBody("imprint").escape(),
-  sanitizeBody("status").trim().escape(),
-  sanitizeBody("data").toDate(),
+  body("data").toDate(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {

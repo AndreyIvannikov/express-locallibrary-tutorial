@@ -8,6 +8,11 @@ const routes = [
     component: AppHome,
   },
   {
+    path: "/sendmail",
+    name: "sendmail",
+    component: () => import("../components/SendMail.vue"),
+  },
+  {
     path: "/about",
     name: "About",
     component: () => import("../views/About.vue"),

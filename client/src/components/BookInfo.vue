@@ -95,7 +95,7 @@ export default {
       this.booksCopy = data.bookCopy;
       this.title = data.title;
     } catch (error) {
-      this.errors = error.response.status;
+      this.errors = error;
     } finally {
       this.loading = false;
     }

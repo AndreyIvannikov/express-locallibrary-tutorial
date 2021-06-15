@@ -24,7 +24,10 @@ class Book {
       const { data } = await axios.get(url);
       return data;
     } catch (e) {
-      console.dir(e);
+      if (e.response.status === 404) {
+        router.push({ name: "notFound" });
+        throw new Error(e);
+      }
     }
   }
 

@@ -1,5 +1,8 @@
 <template>
-  <p v-if="BookListInstance.length === 0">нет</p>
+  <div class="flex justify-center items-center w-full" v-if="loading">
+    <atom-spinner :animation-duration="1000" :size="60" :color="'#ff1d5e'" />
+  </div>
+  <p v-else-if="BookListInstance.length === 0">Не найдено</p>
   <ul v-else>
     <li v-for="book in BookListInstance" :key="book._id" class="p-2">
       <router-link
@@ -23,15 +26,22 @@
 
 <script>
 import BookInstance from "../api/BookInstance";
+import { AtomSpinner } from "epic-spinners";
+
 export default {
+  components: {
+    AtomSpinner,
+  },
   data() {
     return {
+      loading: true,
       BookListInstance: [],
     };
   },
 
   async mounted() {
     this.BookListInstance = await BookInstance.getBookInstanceList();
+    this.loading = await false;
   },
 
   methods: {

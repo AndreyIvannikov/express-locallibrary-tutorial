@@ -8,8 +8,9 @@ class Author {
       const { data } = await axios(url);
       return data;
     } catch (e) {
-      console.log(e);
-      throw new Error(e);
+      if (e.response.status === 404) {
+        router.push({ name: "notFound" });
+      }
     }
   }
 

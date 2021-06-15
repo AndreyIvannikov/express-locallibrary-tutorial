@@ -8,7 +8,7 @@ const author = require("../models/author");
 exports.genre_list = function (req, res, next) {
   Genre.find().exec((err, genreList) => {
     if (err) {
-      return res.status(404).json({ err });
+      return next(err);
     }
     if (genreList.length === 0) {
       return res.status(200).json({
@@ -34,13 +34,13 @@ exports.genre_detail = function (req, res, next) {
       },
     },
     (error, results) => {
-      if (results.genre == null) {
-        const err = new Error("Genre not found");
-        err.status = 404;
-        return res.status(404).json({ err });
-      }
+      // if (results.genre == null) {
+      //   const err = new Error("Genre not found");
+      //   err.status = 404;
+      //   return res.status(404).json({ err });
+      // }
       if (error) {
-        return next(error);
+        next(error);
       }
       res.send({
         title: "Genre Detail",

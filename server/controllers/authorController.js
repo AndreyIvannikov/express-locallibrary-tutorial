@@ -1,9 +1,5 @@
 const async = require("async");
-const {
-  body,
-  validationResult,
-  check,
-} = require("express-validator");
+const { body, validationResult } = require("express-validator");
 const Author = require("../models/author");
 const Book = require("../models/book");
 
@@ -38,7 +34,7 @@ exports.author_detail = function (req, res, next) {
     },
     (err, result) => {
       if (err) {
-        next(err);
+        return next(err);
       }
 
       res.send({

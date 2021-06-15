@@ -81,12 +81,6 @@ exports.book_detail = function (req, res, next) {
       },
     },
     (error, results) => {
-      if (results.bookInfo == null) {
-        const err = new Error("Book not found");
-        err.status = 404;
-        return res.status(404).json({ err });
-      }
-
       if (error) {
         return next(error);
       }

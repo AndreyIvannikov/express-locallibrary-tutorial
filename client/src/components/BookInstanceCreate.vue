@@ -24,7 +24,7 @@
             id="grid-state"
           >
             <option disabled value="">Selected book</option>
-            <option v-for="a in bookList" :key="a._id" :value="a._id">
+            <option v-for="a in bookList.bookList" :key="a._id" :value="a._id">
               {{ a.title }}
             </option>
           </select>

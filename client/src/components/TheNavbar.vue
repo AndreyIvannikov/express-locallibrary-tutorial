@@ -38,6 +38,9 @@
               Create new book instance (copy)
             </router-link>
           </li>
+          <li class="p-1.5">
+            <router-link to="/sendmail"> Send Mail </router-link>
+          </li>
         </ul>
       </nav>
     </div>
