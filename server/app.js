@@ -10,7 +10,6 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const users = require("./routes/users");
 const catalogRouter = require("./routes/catalog");
-const index = require("./routes/index");
 
 const app = express();
 
@@ -24,6 +23,7 @@ const start = async () => {
       useUnifiedTopology: true,
       useFindAndModify: false,
     });
+    mongoose.set("useCreateIndex", true);
     mongoose.Promise = global.Promise;
     const db = mongoose.connection;
     db.on(
@@ -47,8 +47,8 @@ app.use("/users", users);
 app.use("/catalog", catalogRouter);
 
 app.use((err, req, res, next) => {
-  const isNotFound = ~err.message.indexOf("not found");
-  const isCastError = ~err.message.indexOf("Cast to ObjectId failed");
+  const isNotFound = err.message.indexOf("not found");
+  const isCastError = err.message.indexOf("Cast to ObjectId failed");
   if (err.message && (isNotFound || isCastError)) {
     return next();
   }

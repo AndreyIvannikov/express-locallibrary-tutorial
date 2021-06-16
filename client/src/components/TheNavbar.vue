@@ -41,6 +41,12 @@
           <li class="p-1.5">
             <router-link to="/sendmail"> Send Mail </router-link>
           </li>
+          <li class="p-1.5">
+            <router-link to="/users/auth"> Auth </router-link>
+          </li>
+          <li class="p-1.5">
+            <router-link to="/users/login"> login </router-link>
+          </li>
         </ul>
       </nav>
     </div>

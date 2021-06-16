@@ -30,6 +30,7 @@ export default {
     };
   },
   async mounted() {
+    document.title = "Список книг";
     this.bookList = await Book.getBookList();
     this.loading = await false;
     console.log(this.bookList);

@@ -50,6 +50,7 @@ export default {
   async mounted() {
     try {
       this.genreInfo = await Genre.getGenreDetail(this.$route.params.id);
+      document.title = await `Жанр ${this.genreInfo.genre.name}`;
     } catch (error) {
       this.errors = error.response.status;
     }

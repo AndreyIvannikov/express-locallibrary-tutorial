@@ -30,6 +30,7 @@ export default {
     };
   },
   async mounted() {
+    document.title = "Список авторов";
     this.authorList = await Author.getAuthorsList();
     this.loading = await false;
   },

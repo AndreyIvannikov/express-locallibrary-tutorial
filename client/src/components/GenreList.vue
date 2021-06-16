@@ -31,6 +31,7 @@ export default {
     };
   },
   async mounted() {
+    document.title = "Список жанров";
     this.genreInfo = await Genre.getGenresList();
     this.loading = await false;
   },

@@ -108,6 +108,16 @@ const routes = [
     component: () => import("../components/GenreUpdate"),
   },
   {
+    path: "/users/auth",
+    name: "Auth",
+    component: () => import("../components/Auth"),
+  },
+  {
+    path: "/users/login",
+    name: "Login",
+    component: () => import("../components/Login"),
+  },
+  {
     path: "/:pathMatch(.*)*",
     name: "notFound",
     component: () => import("../components/NotFound.vue"),

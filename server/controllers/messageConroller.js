@@ -49,8 +49,8 @@ exports.sendMessage = [
         "Preview URL: %s",
         nodemailer.getTestMessageUrl(info)
       );
-    } catch (error) {
-      next(error);
+    } catch (errors) {
+      next(errors);
     }
   },
 ];
