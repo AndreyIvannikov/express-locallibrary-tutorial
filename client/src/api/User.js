@@ -3,12 +3,12 @@ class User {
   constructor() {}
 
   async createUser(user) {
-    console.log(user);
     try {
       const url = `${process.env.VUE_APP_SERVER_URL}/users/auth`;
-      await axios.post(url, user);
+      const data = await axios.post(url, user);
+      console.log(data);
     } catch (error) {
-      console.log(error);
+      console.dir(error);
     }
   }
 

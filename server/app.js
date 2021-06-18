@@ -10,6 +10,7 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const users = require("./routes/users");
 const catalogRouter = require("./routes/catalog");
+const errorMiddleware = require("./middlewares/error-middleware");
 
 const app = express();
 
@@ -45,20 +46,8 @@ app.use("/", express.static(path.join(__dirname, "../client/dist")));
 app.use(express.json());
 app.use("/users", users);
 app.use("/catalog", catalogRouter);
+app.use(errorMiddleware);
 
-app.use((err, req, res, next) => {
-  const isNotFound = err.message.indexOf("not found");
-  const isCastError = err.message.indexOf("Cast to ObjectId failed");
-  if (err.message && (isNotFound || isCastError)) {
-    return next();
-  }
-
-  res.status(500).json({ error: err.stack });
-});
-
-app.use((req, res) => {
-  res.sendStatus(404);
-});
 
 start();
 module.exports = app;
