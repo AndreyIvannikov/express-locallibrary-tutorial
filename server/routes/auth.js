@@ -14,4 +14,8 @@ router.get("/cool", (req, res, next) => {
 
 router.post("/auth", auth.createUser);
 router.post("/login", auth.login);
+router.get("/logout", auth.logout);
+// router.post("/logout", () => {
+//   console.log(24315);
+// });
 module.exports = router;

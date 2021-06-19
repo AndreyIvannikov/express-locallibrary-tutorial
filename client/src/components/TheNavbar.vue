@@ -45,7 +45,7 @@
             <router-link to="/users/auth"> Auth </router-link>
           </li>
           <li class="p-1.5">
-            <router-link to="/users/login"> login </router-link>
+            <button @click.stop="logout">logout</button>
           </li>
         </ul>
       </nav>
@@ -54,9 +54,15 @@
 </template>
 
 <script>
+import User from "../api/User";
 export default {
-  setup() {
+  data() {
     return {};
+  },
+  methods: {
+    async logout() {
+      await User.logout();
+    },
   },
 };
 </script>

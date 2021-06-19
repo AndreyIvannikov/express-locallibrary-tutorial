@@ -8,7 +8,7 @@ const helmet = require("helmet");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
-const users = require("./routes/users");
+const auth = require("./routes/auth");
 const catalogRouter = require("./routes/catalog");
 const errorMiddleware = require("./middlewares/error-middleware");
 
@@ -44,10 +44,9 @@ app.use(helmet());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", express.static(path.join(__dirname, "../client/dist")));
 app.use(express.json());
-app.use("/users", users);
+app.use("/users", auth);
 app.use("/catalog", catalogRouter);
 app.use(errorMiddleware);
-
 
 start();
 module.exports = app;

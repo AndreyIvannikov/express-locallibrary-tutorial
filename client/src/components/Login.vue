@@ -26,10 +26,10 @@
             focus:outline-none
             focus:shadow-outline
           "
-          v-model="username"
+          v-model="email"
           id="username"
-          type="text"
-          placeholder="Username"
+          type="email"
+          placeholder="email"
         />
       </div>
       <div class="mb-6">
@@ -105,14 +105,14 @@ export default {
   data() {
     return {
       password: "",
-      username: "",
+      email: "",
     };
   },
   methods: {
     async login() {
       const response = await User.login({
         password: this.password,
-        username: this.username,
+        email: this.email,
       });
       console.log(response);
     },

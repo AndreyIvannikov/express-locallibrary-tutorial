@@ -27,11 +27,6 @@ class Token {
     });
     return token;
   }
-
-  async removeToken(refreshToken) {
-    const token = await TokenModel.deleteOne({ refreshToken });
-    return token;
-  }
 }
 
 module.exports = new Token();
